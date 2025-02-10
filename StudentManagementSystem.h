@@ -63,6 +63,7 @@ void adminMenu(accNode* aHead);
 void displayAdminMenu();
 
 void addAccount(accNode* aHead);
+void deleteAccount(accNode* aHead);
 void getValidAccount(char* userName);
 void setPassword(char* password1, char* password2);
 char selectIdentify();

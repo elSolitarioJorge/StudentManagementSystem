@@ -15,7 +15,7 @@ void adminMenu(accNode* aHead) {
                 addAccount(aHead);
             break;
             case 2:
-                //delAccount();
+                deleteAccount(aHead);
             break;
             case 3:
                 //changeAccount();
@@ -84,9 +84,11 @@ char selectIdentify() {
         }
     }
 }
+
 void getValidAccount(char* userName) {
     do {
         scanf("%19s", userName);
+        while(getchar() != '\n');
         if(strlen(userName) > 10) {
             printf("用户名过长，请重新输入：");
         }
@@ -103,4 +105,36 @@ void setPassword(char* password1, char* password2) {
             printf("密码不匹配，请重试\n");
         }
     } while(strcmp(password1, password2) != 0);
+}
+
+void deleteAccount(accNode* aHead) {
+    char userName[20] = "";
+    accNode* cur = aHead;
+    printf("请输入要删除的用户名（账号）：");
+    scanf("%19s", userName);
+    while(getchar() != '\n');
+    while(cur->next != NULL) {
+        if(strcmp(cur->next->account.userName, userName) == 0) {
+            char choice;
+            printf("是否确认删除此账户(Y/N):");
+            scanf(" %c", &choice);
+            while(getchar() != '\n');
+            if(choice == 'Y' || choice == 'y') {
+                accNode* del = cur->next;
+                cur->next = del->next;
+                free(del);
+                writeAccountToFile(aHead);
+                printf("删除成功！！！\n");
+                wait();
+                return;
+            } else {
+                printf("已取消删除！！！\n");
+                wait();
+                return;
+            }
+        }
+        cur = cur->next;
+    }
+    printf("没有找到该用户！！！\n");
+    wait();
 }
