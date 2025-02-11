@@ -85,7 +85,7 @@ void userLogin(accNode* aHead, stuNode* sHead) {
 
 void inputHiddenPassword(char* inputPassword) {
     int i = 0;
-    char input;
+    int input;
     while((input = _getch()) != '\r') {
         if(input == '\b') {
             if(i > 0) {

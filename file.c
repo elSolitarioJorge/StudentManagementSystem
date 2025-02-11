@@ -51,6 +51,7 @@ void readAccountFromFile(accNode* aHead) {
         }
         newAccNode->account = account;
         newAccNode->next = NULL;
+
         tail->next = newAccNode;
         tail = newAccNode;
     }

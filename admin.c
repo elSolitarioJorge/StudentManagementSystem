@@ -18,7 +18,7 @@ void adminMenu(accNode* aHead) {
                 deleteAccount(aHead);
             break;
             case 3:
-                pagePrintingAccount(aHead, 5);
+                pagePrintingAccount(aHead, 1);
             break;
             default :
                 printf("输入不合法，请输入0~3之间的整数\n");
@@ -142,4 +142,58 @@ void deleteAccount(accNode* aHead) {
     }
     printf("没有找到该用户！！！\n");
     wait();
+}
+
+void pagePrintingAccount(const accNode* aHead, const int pageSize) {
+    accNode* cur = aHead->next;
+    int size = 0;
+    while(cur != NULL) {
+        size++;
+        cur = cur->next;
+    }
+    int currentPage = 1, totalPages = (size + pageSize - 1) / pageSize;
+    cur = aHead->next;
+    while(1) {
+        system("cls");
+        printf("---用户账密信息---\n\n");
+        printf("账号\t\t用户身份\t密码\n");
+        int count = 0;
+        accNode* temp = cur;
+        while(temp && count < pageSize) {
+            printf("%-16s", temp->account.userName);
+            if(temp->account.role == 'S') {
+                printf("学生\t\t");
+            } else if(temp->account.role == 'T') {
+                printf("教师\t\t");
+            } else if(temp->account.role == 'A') {
+                printf("管理员\t\t");
+            }
+            printf("%s\n", temp->account.password);
+            temp = temp->next;
+            count++;
+        }
+        printf("\n\t--------Page(%d/%d)--------\n\n", currentPage, totalPages);
+        if (currentPage < totalPages) {
+            printf("按 N 查看下一页，");
+        }
+        if (currentPage > 1) {
+            printf("按 B 返回上一页，");
+        }
+        printf("按 Q 退出：");
+        int command = _getch();
+        if((command == 'N' || command == 'n') && currentPage < totalPages) {
+            for(int i = 0; i < pageSize && cur; i++) {
+                cur = cur->next;
+            }
+            currentPage++;
+        } else if((command == 'B' || command == 'b') && currentPage > 1) {
+            cur = aHead->next;
+            for(int i = 0; i < pageSize * (currentPage - 2) && cur; i++) {
+                cur = cur->next;
+            }
+            currentPage--;
+        } else if(command == 'Q' || command == 'q') {
+            break;
+        }
+    }
 }
