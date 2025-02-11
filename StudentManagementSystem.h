@@ -51,7 +51,7 @@ void displayMainMenu();
 
 int getValidInput(int min, int max);
 void inputHiddenPassword(char* inputPassword);
-int authentication(const char* inputUserName, const char* inputPassword, char* role);
+char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword);
 void wait();
 //学生端
 void displayStudentMenu();
@@ -64,6 +64,7 @@ void displayAdminMenu();
 
 void addAccount(accNode* aHead);
 void deleteAccount(accNode* aHead);
+void pagePrintingAccount(const accNode* aHead, const int pageSize);
 void getValidAccount(char* userName);
 void setPassword(char* password1, char* password2);
 char selectIdentify();

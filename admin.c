@@ -18,7 +18,7 @@ void adminMenu(accNode* aHead) {
                 deleteAccount(aHead);
             break;
             case 3:
-                //changeAccount();
+                pagePrintingAccount(aHead, 5);
             break;
             default :
                 printf("输入不合法，请输入0~3之间的整数\n");
@@ -32,7 +32,7 @@ void displayAdminMenu() {
     printf("欢迎管理员登录！\n");
     printf("1.添加账户信息\n");
     printf("2.删除账户信息\n");
-    printf("3.更改账户信息\n");
+    printf("3.打印所有账户信息\n");
     printf("0.返回上一级\n");
 }
 
@@ -51,14 +51,18 @@ void addAccount(accNode* aHead) {
     strcpy(newAccount->account.userName, userName);
     strcpy(newAccount->account.password, password1);
     newAccount->account.role = role;
-    newAccount->next = aHead->next;
-    aHead->next = newAccount;
+    accNode* tail = aHead;
+    while(tail->next != NULL) {
+        tail = tail->next;
+    }
+    newAccount->next = NULL;
+    tail->next = newAccount;
     writeAccountToFile(aHead);
     printf("---账户添加成功---\n");
     printf("新账户信息：\n");
     printf("用户名：%s\n", newAccount->account.userName);
-    printf("密码：%s\n", newAccount->account.password);
-    printf("身份：%c\n", newAccount->account.role);
+    printf("密码：  %s\n", newAccount->account.password);
+    printf("身份：  %c\n", newAccount->account.role);
     wait();
 }
 
@@ -108,6 +112,7 @@ void setPassword(char* password1, char* password2) {
 }
 
 void deleteAccount(accNode* aHead) {
+    system("cls");
     char userName[20] = "";
     accNode* cur = aHead;
     printf("请输入要删除的用户名（账号）：");

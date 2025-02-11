@@ -63,25 +63,23 @@ void userLogin(accNode* aHead, stuNode* sHead) {
     while(getchar() != '\n');
     printf("请输入密码：");
     inputHiddenPassword(inputPassword);
-    char role;
-    if(authentication(inputUserName, inputPassword, &role)) {
-        switch(role) {
-            case 'S':
-                //studentMenu();
-            break;
-            case 'T':
-                //teacherMenu();
-            break;
-            case 'A':
-                adminMenu(aHead);
-            break;
-            default:
-            break;
-        }
-    } else {
-        printf("用户名或密码错误！！！\n");
-        wait();
+    char role = authentication(aHead, inputUserName, inputPassword);
+    switch(role) {
+        case 'S':
+            //studentMenu();
+        break;
+        case 'T':
+            //teacherMenu();
+        break;
+        case 'A':
+            adminMenu(aHead);
+        break;
+        default:
+            printf("用户名或密码错误，请重试\n");
+            wait();
+        break;
     }
+
 
 }
 
@@ -103,27 +101,13 @@ void inputHiddenPassword(char* inputPassword) {
     inputPassword[i] = '\0';
 }
 
-int authentication(const char* inputUserName, const char* inputPassword, char* role) {
-    FILE* fp = fopen("account.txt", "rb");
-    if(fp == NULL) {
-        perror("Error opening account.txt");
-        wait();
-        return 0;
-    }
-    char userName[21] = "";
-    char password[MAX_PASSWORD_LENTH + 1] = "";
-    accNode* user = (accNode*)malloc(sizeof(accNode));
-    user->next = NULL;
-    while(!feof(fp)) {
-        fread(user, sizeof(accNode), 1, fp);
-        *role = user->account.role;
-        if(strcmp(user->account.userName, inputUserName) == 0 && strcmp(user->account.password, inputPassword) == 0) {
-            fclose(fp);
-            free(user);
-            return 1;
+char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword) {
+    accNode* cur = aHead->next;
+    while(cur != NULL) {
+        if(strcmp(cur->account.userName, inputUserName) == 0 && strcmp(cur->account.password, inputPassword) == 0) {
+            return cur->account.role;
         }
+        cur = cur->next;
     }
-    fclose(fp);
-    free(user);
-    return 0;
+    return -1;
 }
