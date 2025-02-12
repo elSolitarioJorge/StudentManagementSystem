@@ -13,7 +13,7 @@ void mainMenu(accNode* aHead, stuNode* sHead) {
         switch(choice) {
             case 0://退出程序
                 printf("谢谢使用，再见！\n");
-                wait();
+                pressAnyKeyToContinue();
                 exit(0);
             case 1://用户登录
                 userLogin(aHead, sHead);
@@ -23,7 +23,7 @@ void mainMenu(accNode* aHead, stuNode* sHead) {
             break;
             default:
                 printf("输入不合法，请输入0~2之间的整数\n");
-                wait();
+                pressAnyKeyToContinue();
             break;
         }
     } while(choice);
@@ -36,31 +36,11 @@ void displayMainMenu() {
     printf("2.忘记密码\n");
 }
 
-int getValidInput(int min, int max) {
-    int input;
-    char monitoring; //用于监视输入  monitor  v.监测;监视;监控
-    if(scanf("%d%c", &input, &monitoring) != 2 || monitoring != '\n') {
-        while(getchar() != '\n');//清空输入缓冲区
-        return -1;
-    }
-    if(input < min || input > max) {
-        return -1;
-    }
-    return input;
-}
-
-void wait() {
-    printf("请按任意键继续...\n");
-    _getch();
-}
-
 void userLogin(accNode* aHead, stuNode* sHead) {
     char inputUserName[20] = "";
-    char inputPassword[MAX_PASSWORD_LENTH + 1] = "";
+    char inputPassword[MAX_PASSWORD_LENGTH + 1] = "";
     system("cls");
-    printf("请输入用户名(账号)：");
-    scanf("%19s", inputUserName);
-    while(getchar() != '\n');
+    getStringInput("请输入用户名（账号）：", inputUserName, sizeof(inputUserName));
     printf("请输入密码：");
     inputHiddenPassword(inputPassword);
     char role = authentication(aHead, inputUserName, inputPassword);
@@ -69,18 +49,16 @@ void userLogin(accNode* aHead, stuNode* sHead) {
             //studentMenu();
         break;
         case 'T':
-            //teacherMenu();
+            teacherMenu(sHead);
         break;
         case 'A':
             adminMenu(aHead);
         break;
         default:
             printf("用户名或密码错误，请重试\n");
-            wait();
+            pressAnyKeyToContinue();
         break;
     }
-
-
 }
 
 void inputHiddenPassword(char* inputPassword) {
@@ -92,7 +70,7 @@ void inputHiddenPassword(char* inputPassword) {
                 i--;
                 printf("\b \b");
             }
-        }else if(i < MAX_PASSWORD_LENTH) {
+        }else if(i < MAX_PASSWORD_LENGTH) {
             inputPassword[i++] = input;
             putchar('*');
         }

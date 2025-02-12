@@ -65,16 +65,16 @@ void readStudentFromFile(stuNode* sHead) {
         perror("Error opening student.txt");
         return;
     }
-    accNode* tail = sHead;
-    Acc account;
-    while(fread(&account, sizeof(Stu), 1, fp) == 1) {
-        accNode* newStuNode = (accNode*)malloc(sizeof(stuNode));
+    stuNode* tail = sHead;
+    Stu student;
+    while(fread(&student, sizeof(Stu), 1, fp) == 1) {
+        stuNode* newStuNode = (stuNode*)malloc(sizeof(stuNode));
         if(newStuNode == NULL) {
             perror("Error allocating memory");
             fclose(fp);
             return;
         }
-        newStuNode->account = account;
+        newStuNode->student = student;
         newStuNode->next = NULL;
         tail->next = newStuNode;
         tail = newStuNode;

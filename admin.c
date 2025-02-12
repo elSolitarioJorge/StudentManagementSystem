@@ -22,7 +22,7 @@ void adminMenu(accNode* aHead) {
             break;
             default :
                 printf("输入不合法，请输入0~3之间的整数\n");
-                wait();
+                pressAnyKeyToContinue();
             break;
         }
     } while(choice);
@@ -39,8 +39,8 @@ void displayAdminMenu() {
 void addAccount(accNode* aHead) {
     system("cls");
     char userName[20] = "";
-    char password1[MAX_PASSWORD_LENTH + 1] = "";
-    char password2[MAX_PASSWORD_LENTH + 1] = "";
+    char password1[MAX_PASSWORD_LENGTH + 1] = "";
+    char password2[MAX_PASSWORD_LENGTH + 1] = "";
     printf("---添加账户---\n");
     printf("请选择账户身份（S：学生  T：教师  A：管理员）：");
     char role = selectIdentify();
@@ -63,7 +63,7 @@ void addAccount(accNode* aHead) {
     printf("用户名：%s\n", newAccount->account.userName);
     printf("密码：  %s\n", newAccount->account.password);
     printf("身份：  %c\n", newAccount->account.role);
-    wait();
+    pressAnyKeyToContinue();
 }
 
 char selectIdentify() {
@@ -71,7 +71,7 @@ char selectIdentify() {
     char monitoring;
     while(1) {
         if(scanf(" %c%c", &ch, &monitoring) != 2 || monitoring != '\n') {
-            while(getchar() != '\n');
+            clearInputBuffer();
             printf("输入不合法，请输入一个字符（S/T/A）：");
         }
         else if(ch == 'S' || ch == 's') {
@@ -92,7 +92,7 @@ char selectIdentify() {
 void getValidAccount(char* userName) {
     do {
         scanf("%19s", userName);
-        while(getchar() != '\n');
+        clearInputBuffer();
         if(strlen(userName) > 10) {
             printf("用户名过长，请重新输入：");
         }
@@ -115,33 +115,31 @@ void deleteAccount(accNode* aHead) {
     system("cls");
     char userName[20] = "";
     accNode* cur = aHead;
-    printf("请输入要删除的用户名（账号）：");
-    scanf("%19s", userName);
-    while(getchar() != '\n');
+    getStringInput("请输入要删除的用户名（账号）：", userName, sizeof(userName));
     while(cur->next != NULL) {
         if(strcmp(cur->next->account.userName, userName) == 0) {
             char choice;
             printf("是否确认删除此账户(Y/N):");
             scanf(" %c", &choice);
-            while(getchar() != '\n');
+            clearInputBuffer();
             if(choice == 'Y' || choice == 'y') {
                 accNode* del = cur->next;
                 cur->next = del->next;
                 free(del);
                 writeAccountToFile(aHead);
                 printf("删除成功！！！\n");
-                wait();
+                pressAnyKeyToContinue();
                 return;
             } else {
                 printf("已取消删除！！！\n");
-                wait();
+                pressAnyKeyToContinue();
                 return;
             }
         }
         cur = cur->next;
     }
     printf("没有找到该用户！！！\n");
-    wait();
+    pressAnyKeyToContinue();
 }
 
 void pagePrintingAccount(const accNode* aHead, const int pageSize) {

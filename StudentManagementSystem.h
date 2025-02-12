@@ -11,17 +11,17 @@
 #include <conio.h>
 #include <windows.h>
 
-#define MAX_PASSWORD_LENTH 50
+#define MAX_PASSWORD_LENGTH 50
 
 typedef struct Score{
-    int chinese;
-    int math;
-    int english;
+    float chinese;
+    float math;
+    float english;
 } Sco;
 
 typedef struct Account {
     char userName[20];
-    char password[MAX_PASSWORD_LENTH + 1];
+    char password[MAX_PASSWORD_LENGTH + 1];
     char role;
 } Acc;
 
@@ -34,6 +34,7 @@ typedef struct Student {
 
 typedef struct studentList {
     Stu student;
+    struct studentList* prev;
     struct studentList* next;
 } stuNode;
 
@@ -44,19 +45,29 @@ typedef struct accountList {
 
 //初始化
 void addAdmin(accNode* aHead);
+void pressAnyKeyToContinue();
+void clearInputBuffer();
+int getValidInput(int min, int max);
+void getStringInput(const char* prompt, char* input, int size);
+float getFloatInput(const char* prompt);
+
+
 //登录
 void mainMenu(accNode* aHead, stuNode* sHead);
 void userLogin(accNode* aHead, stuNode* sHead);
 void displayMainMenu();
 
-int getValidInput(int min, int max);
 void inputHiddenPassword(char* inputPassword);
 char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword);
-void wait();
+
 //学生端
 void displayStudentMenu();
 
 //教师端
+void teacherMenu(stuNode* sHead);
+void displayTeacherMenu();
+void addStudent(stuNode* sHead);
+void deleteStudent(stuNode* sHead);
 
 //管理员端
 void adminMenu(accNode* aHead);
