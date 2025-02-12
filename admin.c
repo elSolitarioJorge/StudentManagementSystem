@@ -47,16 +47,11 @@ void addAccount(accNode* aHead) {
     printf("请输入用户名(账号）(长度不超过10位的字符串）：");
     getValidAccount(userName);
     setPassword(password1, password2);
-    accNode* newAccount = (accNode*)malloc(sizeof(accNode));
+    accNode* newAccount = createAccountNode();
     strcpy(newAccount->account.userName, userName);
     strcpy(newAccount->account.password, password1);
     newAccount->account.role = role;
-    accNode* tail = aHead;
-    while(tail->next != NULL) {
-        tail = tail->next;
-    }
-    newAccount->next = NULL;
-    tail->next = newAccount;
+    appendAccountNodeAtTail(aHead, newAccount);
     writeAccountToFile(aHead);
     printf("---账户添加成功---\n");
     printf("新账户信息：\n");
@@ -142,7 +137,7 @@ void deleteAccount(accNode* aHead) {
     pressAnyKeyToContinue();
 }
 
-void pagePrintingAccount(const accNode* aHead, const int pageSize) {
+void pagePrintingAccount(const accNode* aHead, int pageSize) {
     accNode* cur = aHead->next;
     int size = 0;
     while(cur != NULL) {

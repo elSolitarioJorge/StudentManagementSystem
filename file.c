@@ -11,7 +11,7 @@ void writeAccountToFile(const accNode* aHead) {
         fwrite(&(cur->account), sizeof(Acc), 1, fp);
         cur = cur->next;
     }
-    printf("写入成功\n");
+    printf("账户信息写入成功\n");
     fclose(fp);
 }
 
@@ -30,7 +30,7 @@ void writeStudentToFile(const stuNode* sHead) {
         }
         cur = cur->next;
     }
-    printf("写入成功\n");
+    printf("学生信息写入成功\n");
     fclose(fp);
 }
 
@@ -40,22 +40,13 @@ void readAccountFromFile(accNode* aHead) {
         perror("Error opening account.txt");
         return;
     }
-    accNode* tail = aHead;
     Acc account;
     while(fread(&account, sizeof(Acc), 1, fp) == 1) {
-        accNode* newAccNode = (accNode*)malloc(sizeof(accNode));
-        if(newAccNode == NULL) {
-            perror("Error allocating memory");
-            fclose(fp);
-            return;
-        }
+        accNode* newAccNode = createAccountNode();
         newAccNode->account = account;
-        newAccNode->next = NULL;
-
-        tail->next = newAccNode;
-        tail = newAccNode;
+        appendAccountNodeAtTail(aHead, newAccNode);
     }
-    printf("读取成功\n");
+    printf("账户信息读取成功\n");
     fclose(fp);
 }
 
@@ -65,21 +56,13 @@ void readStudentFromFile(stuNode* sHead) {
         perror("Error opening student.txt");
         return;
     }
-    stuNode* tail = sHead;
     Stu student;
     while(fread(&student, sizeof(Stu), 1, fp) == 1) {
-        stuNode* newStuNode = (stuNode*)malloc(sizeof(stuNode));
-        if(newStuNode == NULL) {
-            perror("Error allocating memory");
-            fclose(fp);
-            return;
-        }
+        stuNode* newStuNode = createStudentNode();
         newStuNode->student = student;
-        newStuNode->next = NULL;
-        tail->next = newStuNode;
-        tail = newStuNode;
+        appendStudentNodeAtTail(sHead, newStuNode);
     }
-    printf("读取成功\n");
+    printf("学生信息读取成功\n");
     fclose(fp);
 }
 

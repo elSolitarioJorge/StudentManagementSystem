@@ -1,17 +1,15 @@
 #include "StudentManagementSystem.h"
 
 int main() {
-    accNode* aHead = (accNode*)malloc(sizeof(accNode));
-    aHead->next = NULL;
-    stuNode* sHead = (stuNode*)malloc(sizeof(stuNode));
-    sHead->next = NULL;
-    sHead->prev = NULL;
+    accNode* aHead = createAccountNode();
+    stuNode* sHead = createStudentNode();
     readAccountFromFile(aHead);
+    readStudentFromFile(sHead);
     pressAnyKeyToContinue();
     system("cls");
     mainMenu(aHead, sHead);
-    free(aHead);
-    free(sHead);
+    freeAccountList(aHead);
+    freeStudentList(sHead);
     return 0;
 }
 
@@ -74,4 +72,60 @@ float getFloatInput(const char* prompt) {
     }
 }
 
+accNode* createAccountNode() {
+    accNode* newAccNode = (accNode*)malloc(sizeof(accNode));
+    if(newAccNode == NULL) {
+        perror("Error allocating memory");
+        exit(-1);
+    }
+    newAccNode->next = NULL;
+    return newAccNode;
+}
 
+stuNode* createStudentNode() {
+    stuNode* newStuNode = (stuNode*)malloc(sizeof(stuNode));
+    if(newStuNode == NULL) {
+        perror("Error allocating memory");
+        exit(-1);
+    }
+    newStuNode->prev = NULL;
+    newStuNode->next = NULL;
+    return newStuNode;
+}
+
+void appendAccountNodeAtTail(accNode* aHead, accNode* newAccNode) {
+    accNode* tail = aHead;
+    while(tail->next != NULL) {
+        tail = tail->next;
+    }
+    newAccNode->next = NULL;
+    tail->next = newAccNode;
+}
+
+void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode) {
+    stuNode* tail = sHead;
+    while(tail->next != NULL) {
+        tail = tail->next;
+    }
+    newStuNode->next = NULL;
+    newStuNode->prev = tail;
+    tail->next = newStuNode;
+}
+
+void freeAccountList(accNode* aHead) {
+    accNode* cur = aHead;
+    while(cur != NULL) {
+        accNode* del = cur;
+        cur = cur->next;
+        free(del);
+    }
+}
+
+void freeStudentList(stuNode* sHead) {
+    stuNode* cur = sHead;
+    while(cur != NULL) {
+        stuNode* del = cur;
+        cur = cur->next;
+        free(del);
+    }
+}

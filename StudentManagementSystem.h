@@ -50,8 +50,12 @@ void clearInputBuffer();
 int getValidInput(int min, int max);
 void getStringInput(const char* prompt, char* input, int size);
 float getFloatInput(const char* prompt);
-
-
+accNode* createAccountNode();
+stuNode* createStudentNode();
+void appendAccountNodeAtTail(accNode* aHead, accNode*  newAccNode);
+void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode);
+void freeAccountList(accNode* aHead);
+void freeStudentList(stuNode* sHead);
 //登录
 void mainMenu(accNode* aHead, stuNode* sHead);
 void userLogin(accNode* aHead, stuNode* sHead);
@@ -68,14 +72,14 @@ void teacherMenu(stuNode* sHead);
 void displayTeacherMenu();
 void addStudent(stuNode* sHead);
 void deleteStudent(stuNode* sHead);
-
+void pagePrintingStudent(const stuNode* sHead, int pageSize);
 //管理员端
 void adminMenu(accNode* aHead);
 void displayAdminMenu();
 
 void addAccount(accNode* aHead);
 void deleteAccount(accNode* aHead);
-void pagePrintingAccount(const accNode* aHead, const int pageSize);
+void pagePrintingAccount(const accNode* aHead, int pageSize);
 void getValidAccount(char* userName);
 void setPassword(char* password1, char* password2);
 char selectIdentify();
