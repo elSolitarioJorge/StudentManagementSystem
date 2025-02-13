@@ -46,7 +46,7 @@ void userLogin(accNode* aHead, stuNode* sHead) {
     char role = authentication(aHead, inputUserName, inputPassword);
     switch(role) {
         case 'S':
-            //studentMenu();
+            studentMenu(sHead, inputUserName);
         break;
         case 'T':
             teacherMenu(sHead);

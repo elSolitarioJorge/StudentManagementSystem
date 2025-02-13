@@ -70,8 +70,9 @@ void inputHiddenPassword(char* inputPassword);
 char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword);
 
 //学生端
-void studentMenu(stuNode* sHead);
+void studentMenu(stuNode* sHead, const char* inputUserName);
 void displayStudentMenu();
+void queryResults(const stuNode* sHead, const char* inputUserName);
 
 //教师端
 void teacherMenu(stuNode* sHead);
