@@ -72,7 +72,8 @@ char authentication(const accNode* aHead, const char* inputUserName, const char*
 //学生端
 void studentMenu(stuNode* sHead, const char* inputUserName);
 void displayStudentMenu();
-void queryResults(const stuNode* sHead, const char* inputUserName);
+void queryResults(const stuNode* myself);
+void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class);
 
 //教师端
 void teacherMenu(stuNode* sHead);
