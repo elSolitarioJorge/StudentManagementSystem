@@ -13,17 +13,17 @@ void adminMenu(accNode* aHead) {
                 return;
             case 1:
                 addAccount(aHead);
-            break;
+                break;
             case 2:
                 deleteAccount(aHead);
-            break;
+                break;
             case 3:
                 pagePrintingAccount(aHead, 1);
-            break;
+                break;
             default :
                 printf("输入不合法，请输入0~3之间的整数\n");
                 pressAnyKeyToContinue();
-            break;
+                break;
         }
     } while(choice);
 }
@@ -32,7 +32,7 @@ void displayAdminMenu() {
     printf("欢迎管理员登录！\n");
     printf("1.添加账户信息\n");
     printf("2.删除账户信息\n");
-    printf("3.打印所有账户信息\n");
+    printf("3.查看所有账户信息\n");
     printf("0.返回上一级\n");
 }
 

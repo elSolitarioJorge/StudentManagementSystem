@@ -17,6 +17,10 @@ typedef struct Score{
     float chinese;
     float math;
     float english;
+    float physics;
+    float chemistry;
+    float biology;
+    float total;
 } Sco;
 
 typedef struct Account {
@@ -28,6 +32,7 @@ typedef struct Account {
 typedef struct Student {
     char name[50];
     char id[20];
+    int class;
     Sco score;
 } Stu;
 
@@ -65,6 +70,7 @@ void inputHiddenPassword(char* inputPassword);
 char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword);
 
 //学生端
+void studentMenu(stuNode* sHead);
 void displayStudentMenu();
 
 //教师端

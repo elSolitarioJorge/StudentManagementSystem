@@ -17,14 +17,14 @@ void mainMenu(accNode* aHead, stuNode* sHead) {
                 exit(0);
             case 1://用户登录
                 userLogin(aHead, sHead);
-            break;
+                break;
             case 2://忘记密码
                 //passwordRecovery();
-            break;
+                break;
             default:
                 printf("输入不合法，请输入0~2之间的整数\n");
                 pressAnyKeyToContinue();
-            break;
+                break;
         }
     } while(choice);
 }

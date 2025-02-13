@@ -35,7 +35,7 @@ void displayTeacherMenu() {
     printf("欢迎教师登录!\n");
     printf("1.添加学生信息\n");
     printf("2.删除学生信息\n");
-    printf("3.打印所有学生信息\n");
+    printf("3.查看所有学生信息\n");
     printf("0.返回上一级\n");
 }
 
@@ -46,15 +46,31 @@ void addStudent(stuNode* sHead) {
     printf("---添加学生信息---\n");
     getStringInput("学号：", id, sizeof(id));
     getStringInput("姓名：", name, sizeof(name));
+    printf("班级：");
+    int class = getValidInput(1, 25);
+    if(class == -1) {
+        printf("输入不合法（直接输入学生所在班级的数字即可），添加学生失败！\n");
+        pressAnyKeyToContinue();
+        return;
+    }
     float chinese = getFloatInput("语文成绩：");
     float math = getFloatInput("数学成绩：");
     float english = getFloatInput("英语成绩：");
+    float physics = getFloatInput("物理成绩：");
+    float chemistry = getFloatInput("化学成绩：");
+    float biology = getFloatInput("生物成绩：");
+    float total = chinese + math + english + physics + chemistry + biology;
     stuNode* newStudent = createStudentNode();
     strcpy(newStudent->student.id, id);
     strcpy(newStudent->student.name, name);
+    newStudent->student.class = class;
     newStudent->student.score.chinese = chinese;
     newStudent->student.score.math = math;
     newStudent->student.score.english = english;
+    newStudent->student.score.physics = physics;
+    newStudent->student.score.chemistry = chemistry;
+    newStudent->student.score.biology = biology;
+    newStudent->student.score.total = total;
     appendStudentNodeAtTail(sHead, newStudent);
     writeStudentToFile(sHead);
     printf("学生信息添加成功！\n");
@@ -101,20 +117,23 @@ void pagePrintingStudent(const stuNode* sHead, int pageSize) {
         cur = cur->next;
     }
     cur = sHead->next;
-    int currentPage = 1, totalPages = (size + pageSize - 1) / pageSize;
+    int totalPages = (size + pageSize - 1) / pageSize;
+    int currentPage = totalPages ? 1 : 0;
     while(1) {
         system("cls");
-        printf("---学生信息---\n\n");
-        printf("姓名\t\t学号\t\t语文\t\t数学\t\t英语\t\t总分\n");
+        printf("\t\t----2023-2024学年下学期高三2024届第四次模拟考试成绩单----\n\n");
+        printf("学号\t\t姓名\t班级\t总分\t语文\t数学\t英语\t物理\t化学\t生物\n");
         int count = 0;
         stuNode* temp = cur;
         while(temp && count < pageSize) {
-            float total = temp->student.score.chinese + temp->student.score.math + temp->student.score.english;
-            printf("%s\t\t%-16s%-16g%-16g%-16g%g\n", temp->student.name, temp->student.id, temp->student.score.chinese, temp->student.score.math, temp->student.score.english, total);
+            printf("%-16s%s\t%d班\t%-8g%-8g%-8g%-8g%-8g%-8g%g\n",
+                temp->student.id, temp->student.name, temp->student.class,temp->student.score.total,
+                temp->student.score.chinese, temp->student.score.math,temp->student.score.english,
+                temp->student.score.physics, temp->student.score.chemistry, temp->student.score.biology);
             temp = temp->next;
             count++;
         }
-        printf("\n\t\t\t--------Page(%d/%d)--------\n\n", currentPage, totalPages);
+        printf("\n\n\t\t\t\t--------Page(%d/%d)--------\n\n", currentPage, totalPages);
         if (currentPage < totalPages) {
             printf("按 N 查看下一页，");
         }
