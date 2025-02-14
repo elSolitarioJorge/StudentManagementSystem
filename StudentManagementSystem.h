@@ -20,6 +20,7 @@ typedef struct Score{
     float physics;
     float chemistry;
     float biology;
+    float lizong;
     float total;
 } Sco;
 
@@ -78,9 +79,18 @@ void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class);
 //教师端
 void teacherMenu(stuNode* sHead);
 void displayTeacherMenu();
+void enterScore(stuNode* student);
 void addStudent(stuNode* sHead);
 void deleteStudent(stuNode* sHead);
+void changeStudent(stuNode* sHead);
+stuNode* findStudent(stuNode* sHead);
 void pagePrintingStudent(const stuNode* sHead, int pageSize);
+
+float compareStudents(const stuNode* s1, const stuNode* s2, int criteria);
+stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria);
+stuNode* splitStudent(stuNode* head);
+stuNode* mergeSortStudentByCriteria(stuNode* head, int criteria);
+
 //管理员端
 void adminMenu(accNode* aHead);
 void displayAdminMenu();

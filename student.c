@@ -49,10 +49,11 @@ void queryResults(const stuNode* myself) {
     system("cls");
     printf("学号：\t%s\n", myself->student.id);
     printf("姓名：\t%s\n", myself->student.name);
-    printf("班级：\t%d班\n", myself->student.class);
+    printf("班级：\t%d\n", myself->student.class);
     printf("语文：\t%g\n", myself->student.score.chinese);
     printf("数学：\t%g\n", myself->student.score.math);
     printf("英语：\t%g\n", myself->student.score.english);
+    printf("理综：\t%g\n", myself->student.score.lizong);
     printf("物理：\t%g\n", myself->student.score.physics);
     printf("化学：\t%g\n", myself->student.score.chemistry);
     printf("生物：\t%g\n", myself->student.score.biology);
@@ -74,16 +75,15 @@ void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class) 
     int currentPage = totalPages ? 1 : 0;
     while(1) {
         system("cls");
-        printf("\t\t----2023-2024学年下学期高三2024届第四次模拟考试成绩单----\n\n");
-        printf("学号\t\t姓名\t班级\t总分\t语文\t数学\t英语\t物理\t化学\t生物\n");
+        printf("\t\t-----2023-2024学年下学期高三2024届第四次模拟考试成绩单-----\n\n");
+        printf("学号\t\t姓名\t班级\t语文\t数学\t英语\t理综\t物理\t化学\t生物\t总分\n");
         int count = 0;
         stuNode* temp = cur;
         while(temp && count < pageSize) {
             if(temp->student.class == class) {
-                printf("%-16s%s\t%d班\t%-8g%-8g%-8g%-8g%-8g%-8g%g\n",
-                    temp->student.id, temp->student.name, temp->student.class,temp->student.score.total,
-                    temp->student.score.chinese, temp->student.score.math,temp->student.score.english,
-                    temp->student.score.physics, temp->student.score.chemistry, temp->student.score.biology);
+                printf("%-16s%s\t%-8d%-8g%-8g%-8g%-8g%-8g%-8g%-8g%g\n",temp->student.id, temp->student.name, temp->student.class,
+                    temp->student.score.chinese, temp->student.score.math, temp->student.score.english, temp->student.score.lizong,
+                    temp->student.score.physics, temp->student.score.chemistry, temp->student.score.biology, temp->student.score.total);
                 count++;
             }
             temp = temp->next;
