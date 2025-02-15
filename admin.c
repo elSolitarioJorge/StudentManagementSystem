@@ -1,13 +1,18 @@
 #include "StudentManagementSystem.h"
 
-void adminMenu(accNode* aHead) {
+void adminMenu(accNode* aHead, stuNode* sHead, tNode* tHead) {
     int choice = 0;
-
-    do {
+    int count = 0;
+    tNode* temp = tHead->next;
+    while(temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    while(1) {
         system("cls");
-        displayAdminMenu();
+        displayAdminMenu(count);
 
-        choice = getValidInput(0, 3);
+        choice = getValidInput(0, 8);
         switch(choice) {
             case 0:
                 return;
@@ -18,39 +23,57 @@ void adminMenu(accNode* aHead) {
                 deleteAccount(aHead);
                 break;
             case 3:
-                pagePrintingAccount(aHead, 1);
+                changeAccount(aHead);
+                break;
+            case 4:
+                findPrevAccount(aHead);
+                pressAnyKeyToContinue();
+                break;
+            case 5:
+                pagePrintingAccount(aHead, 12);
+                break;
+            case 6:
+                printTodo(tHead, count);
+                break;
+            case 7:
+                finishTodo(aHead, tHead, &count);
+                break;
+            case 8:
+                teacherMenu(sHead, "");
                 break;
             default :
-                printf("输入不合法，请输入0~3之间的整数\n");
+                printf("输入不合法，请输入0~8之间的整数\n");
                 pressAnyKeyToContinue();
                 break;
         }
-    } while(choice);
+    }
 }
 
-void displayAdminMenu() {
+void displayAdminMenu(int count) {
     printf("欢迎管理员登录！\n");
     printf("1.添加账户信息\n");
     printf("2.删除账户信息\n");
-    printf("3.查看所有账户信息\n");
+    printf("3.更改账户信息\n");
+    printf("4.查找账户信息\n");
+    printf("5.查看所有账户信息\n");
+    printf("6.查看代办(%d)\n", count);
+    printf("7.完成代办\n");
+    printf("8.登录教师端\n");
     printf("0.返回上一级\n");
 }
 
 void addAccount(accNode* aHead) {
     system("cls");
-    char userName[20] = "";
-    char password1[MAX_PASSWORD_LENGTH + 1] = "";
-    char password2[MAX_PASSWORD_LENGTH + 1] = "";
+    accNode* newAccount = createAccountNode();
     printf("---添加账户---\n");
     printf("请选择账户身份（S：学生  T：教师  A：管理员）：");
-    char role = selectIdentify();
-    printf("请输入用户名(账号）(长度不超过10位的字符串）：");
-    getValidAccount(userName);
-    setPassword(password1, password2);
-    accNode* newAccount = createAccountNode();
-    strcpy(newAccount->account.userName, userName);
-    strcpy(newAccount->account.password, password1);
-    newAccount->account.role = role;
+    newAccount->account.role = selectIdentify();
+    getStringInput("请输入用户名(账号）：", newAccount->account.userName, sizeof(newAccount->account.userName));
+    if(newAccount->account.role == 'S') {
+        strcpy(newAccount->account.password, newAccount->account.userName + strlen(newAccount->account.userName) - 6);
+    } else {
+        strcpy(newAccount->account.password, "111111");
+    }
     appendAccountNodeAtTail(aHead, newAccount);
     writeAccountToFile(aHead);
     printf("---账户添加成功---\n");
@@ -61,80 +84,67 @@ void addAccount(accNode* aHead) {
     pressAnyKeyToContinue();
 }
 
-char selectIdentify() {
-    char ch;
-    char monitoring;
-    while(1) {
-        if(scanf(" %c%c", &ch, &monitoring) != 2 || monitoring != '\n') {
-            clearInputBuffer();
-            printf("输入不合法，请输入一个字符（S/T/A）：");
-        }
-        else if(ch == 'S' || ch == 's') {
-            return 'S';
-        }
-        else if(ch == 'T' || ch =='t') {
-            return 'T';
-        }
-        else if(ch == 'A' || ch == 'a') {
-            return 'A';
-        }
-        else {
-            printf("没有此选项，请重新输入（S：学生  T：教师  A：管理员）：");
-        }
-    }
-}
-
-void getValidAccount(char* userName) {
-    do {
-        scanf("%19s", userName);
-        clearInputBuffer();
-        if(strlen(userName) > 10) {
-            printf("用户名过长，请重新输入：");
-        }
-    } while(strlen(userName) > 10);
-}
-
-void setPassword(char* password1, char* password2) {
-    do {
-        printf("请输入密码：");
-        inputHiddenPassword(password1);
-        printf("请确认密码：");
-        inputHiddenPassword(password2);
-        if(strcmp(password1, password2) != 0) {
-            printf("密码不匹配，请重试\n");
-        }
-    } while(strcmp(password1, password2) != 0);
-}
-
 void deleteAccount(accNode* aHead) {
-    system("cls");
-    char userName[20] = "";
-    accNode* cur = aHead;
-    getStringInput("请输入要删除的用户名（账号）：", userName, sizeof(userName));
-    while(cur->next != NULL) {
-        if(strcmp(cur->next->account.userName, userName) == 0) {
-            char choice;
-            printf("是否确认删除此账户(Y/N):");
-            scanf(" %c", &choice);
-            clearInputBuffer();
-            if(choice == 'Y' || choice == 'y') {
-                accNode* del = cur->next;
-                cur->next = del->next;
-                free(del);
-                writeAccountToFile(aHead);
-                printf("删除成功！！！\n");
-                pressAnyKeyToContinue();
-                return;
-            } else {
-                printf("已取消删除！！！\n");
-                pressAnyKeyToContinue();
-                return;
-            }
+    accNode* prevAcc = findPrevAccount(aHead);
+    if(prevAcc != NULL) {
+        char choice;
+        printf("是否确认删除此账户(Y/N):");
+        scanf(" %c", &choice);
+        clearInputBuffer();
+        if(choice == 'Y' || choice == 'y') {
+            accNode* delAcc = prevAcc->next;
+            prevAcc->next = delAcc->next;
+            free(delAcc);
+            writeAccountToFile(aHead);
+            printf("删除成功！！！\n");
+        } else {
+            printf("已取消删除！！！\n");
         }
-        cur = cur->next;
     }
-    printf("没有找到该用户！！！\n");
     pressAnyKeyToContinue();
+}
+
+void changeAccount(accNode* aHead) {
+    accNode* cur = findPrevAccount(aHead)->next;
+    if(cur) {
+        getStringInput("设置新密码：", cur->account.password, sizeof(cur->account.password));
+        printf("设置新身份（S/T/A）：");
+        cur->account.role = selectIdentify();
+        printf("更改成功！\n");
+    }
+    pressAnyKeyToContinue();
+}
+
+accNode* findPrevAccount(accNode* aHead) {
+    system("cls");
+    char userName[20];
+    accNode* prev = aHead;
+    getStringInput("请输入用户名（账号）：", userName, sizeof(userName));
+    while(prev->next != NULL) {
+        if(strcmp(prev->next->account.userName, userName) == 0) {
+            printf("该用户信息如下：\n");
+            printf("用户名：%s\n", prev->next->account.userName);
+            printf("密码：  %s\n", prev->next->account.password);
+            switch(prev->next->account.role) {
+                case 'A':
+                    printf("身份：  管理员\n");
+                    break;
+                case 'T':
+                    printf("身份：  教师\n");
+                    break;
+                case 'S':
+                    printf("身份：  学生\n");
+                    break;
+                default:
+                    printf("身份：  未知\n");
+                    break;
+            }
+            return prev;
+        }
+        prev = prev->next;
+    }
+    printf("未找到该用户\n");
+    return prev;
 }
 
 void pagePrintingAccount(const accNode* aHead, int pageSize) {
@@ -190,3 +200,65 @@ void pagePrintingAccount(const accNode* aHead, int pageSize) {
         }
     }
 }
+
+void printTodo(const tNode* tHead, int count) {
+    system("cls");
+    tNode* cur = tHead->next;
+    printf("有%d个密码申诉代办，请尽快处理！\n", count);
+    while(cur) {
+        printf("用户名：%s\n", cur->userName);
+        cur = cur->next;
+    }
+    pressAnyKeyToContinue();
+}
+
+void finishTodo(accNode* aHead, tNode* tHead, int* count) {
+    system("cls");
+    while(tHead->next) {
+        accNode* acc = aHead->next;
+        while(acc) {
+            if(strcmp(acc->account.userName, tHead->next->userName) == 0) {
+                if(acc->account.role == 'S') {
+                    strcpy(acc->account.password, acc->account.userName + strlen(acc->account.userName) - 6);
+                } else {
+                    strcpy(acc->account.password, "111111");
+                }
+                tNode* del = tHead->next;
+                tHead->next = del->next;
+                free(del);
+                (*count)--;
+                break;
+            }
+            acc = acc->next;
+        }
+    }
+    writeAccountToFile(aHead);
+    writeTodoToFile(tHead);
+    printf("已将所有申诉账号密码重置完成！（学生初始密码为学号后六位，其他账号初始密码为\"111111\"）\n");
+    pressAnyKeyToContinue();
+}
+
+char selectIdentify() {
+    char ch;
+    char monitoring;
+    while(1) {
+        if(scanf(" %c%c", &ch, &monitoring) != 2 || monitoring != '\n') {
+            clearInputBuffer();
+            printf("输入不合法，请输入一个字符（S/T/A）：");
+        }
+        else if(ch == 'S' || ch == 's') {
+            return 'S';
+        }
+        else if(ch == 'T' || ch =='t') {
+            return 'T';
+        }
+        else if(ch == 'A' || ch == 'a') {
+            return 'A';
+        }
+        else {
+            printf("没有此选项，请重新输入（S：学生  T：教师  A：管理员）：");
+        }
+    }
+}
+
+

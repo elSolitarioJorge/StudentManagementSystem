@@ -3,11 +3,11 @@
 //
 #include "StudentManagementSystem.h"
 
-void studentMenu(stuNode* sHead, const char* inputUserName) {
+void studentMenu(stuNode* sHead, const char* userName, char* password) {
     int choice = 0;
     stuNode* myself = sHead->next;
     while(myself != NULL) {
-        if(strcmp(myself->student.id, inputUserName) == 0) {
+        if(strcmp(myself->student.id, userName) == 0) {
             break;
         }
         myself = myself->next;
@@ -18,10 +18,10 @@ void studentMenu(stuNode* sHead, const char* inputUserName) {
         pressAnyKeyToContinue();
         return;
     }
-    do {
+    while(1) {
         system("cls");
         displayStudentMenu();
-        choice = getValidInput(0, 2);
+        choice = getValidInput(0, 4);
         switch(choice) {
             case 0:
                 return;
@@ -30,19 +30,22 @@ void studentMenu(stuNode* sHead, const char* inputUserName) {
                 break;
             case 2:
                 pagePrintingOneClassStudent(sHead, 10, myself->student.class);
+                break;
+            case 4:
+                changePassword(password);
+                break;
             default:
                 break;
         }
-    }while(choice != 0);
+    }
 }
+
 void displayStudentMenu() {
-    printf("0.退出\n");
     printf("1.成绩查询\n");
     printf("2.查询本班成绩\n");
     printf("3.成绩分析\n");
-    printf("4.成绩申诉\n");
-    printf("5.修改密码\n");
-    printf("6.返回上一级\n");
+    printf("4.修改密码\n");
+    printf("0.返回上一级\n");
 }
 
 void queryResults(const stuNode* myself) {
@@ -120,6 +123,38 @@ void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class) 
         }
     }
 }
+
+void changePassword(char* oldPassword) {
+    system("cls");
+    char inputPassword[MAX_PASSWORD_LENGTH + 1];
+    printf("---修改密码---\n");
+    printf("请输入原密码：");
+    inputHiddenPassword(inputPassword);
+    if(strcmp(inputPassword, oldPassword) == 0) {
+        char password2[MAX_PASSWORD_LENGTH + 1];
+        char password1[MAX_PASSWORD_LENGTH + 1];
+        strcpy(oldPassword, setPassword(password1, password2));
+        printf("密码修改成功！\n");
+    } else {
+        printf("密码错误，请重试\n");
+    }
+    pressAnyKeyToContinue();
+}
+
+char* setPassword(char *password1, char *password2) {
+    while(1){
+        printf("请输入新密码：");
+        inputHiddenPassword(password1);
+        printf("请确认密码：  ");
+        inputHiddenPassword(password2);
+        if(strcmp(password1, password2) != 0) {
+            printf("密码不匹配，请重试！\n");
+        } else {
+            return password1;
+        }
+    }
+}
+
 
 
 

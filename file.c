@@ -34,6 +34,25 @@ void writeStudentToFile(const stuNode* sHead) {
     fclose(fp);
 }
 
+void writeTodoToFile(const tNode* tHead) {
+    FILE* fp = fopen("todo.txt", "wb");
+    if (fp == NULL) {
+        perror("Error opening todo.txt");
+        return;
+    }
+    tNode* cur = tHead->next;
+    while(cur != NULL) {
+        if(fwrite(cur->userName, sizeof(cur->userName), 1, fp) != 1) {
+            perror("Error writing to todo.txt");
+            fclose(fp);
+            return;
+        }
+        cur = cur->next;
+    }
+    printf("代办信息写入成功\n");
+    fclose(fp);
+}
+
 void readAccountFromFile(accNode* aHead) {
     FILE* fp = fopen("account.txt", "rb");
     if(fp == NULL) {
@@ -66,3 +85,18 @@ void readStudentFromFile(stuNode* sHead) {
     fclose(fp);
 }
 
+void readTodoFromFile(tNode* tHead) {
+    FILE* fp = fopen("todo.txt", "rb");
+    if(fp == NULL) {
+        perror("Error opening todo.txt");
+        return;
+    }
+    char userName[20];
+    while(fread(userName, sizeof(userName), 1, fp) == 1) {
+        tNode* newTNode = createTodoNode();
+        strcpy(newTNode->userName, userName);
+        appendTodoNodeAtTail(tHead, newTNode);
+    }
+    printf("代办信息读取成功\n");
+    fclose(fp);
+}

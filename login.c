@@ -1,10 +1,10 @@
 #include "StudentManagementSystem.h"
 
-void mainMenu(accNode* aHead, stuNode* sHead) {
+void mainMenu(accNode* aHead, stuNode* sHead, tNode* tHead) {
 
     int choice = 0;
 
-    do {
+    while(1) {
 
         system("cls");
         displayMainMenu();
@@ -16,17 +16,17 @@ void mainMenu(accNode* aHead, stuNode* sHead) {
                 pressAnyKeyToContinue();
                 exit(0);
             case 1://用户登录
-                userLogin(aHead, sHead);
+                userLogin(aHead, sHead, tHead);
                 break;
             case 2://忘记密码
-                //passwordRecovery();
+                passwordAppeal(aHead, tHead);
                 break;
             default:
                 printf("输入不合法，请输入0~2之间的整数\n");
                 pressAnyKeyToContinue();
                 break;
         }
-    } while(choice);
+    }
 }
 
 void displayMainMenu() {
@@ -36,7 +36,7 @@ void displayMainMenu() {
     printf("2.忘记密码\n");
 }
 
-void userLogin(accNode* aHead, stuNode* sHead) {
+void userLogin(accNode* aHead, stuNode* sHead, tNode* tHead) {
     char inputUserName[20] = "";
     char inputPassword[MAX_PASSWORD_LENGTH + 1] = "";
     system("cls");
@@ -46,26 +46,49 @@ void userLogin(accNode* aHead, stuNode* sHead) {
     char role = authentication(aHead, inputUserName, inputPassword);
     switch(role) {
         case 'S':
-            studentMenu(sHead, inputUserName);
-        break;
+            studentMenu(sHead, inputUserName, inputPassword);
+            break;
         case 'T':
-            teacherMenu(sHead);
-        break;
+            teacherMenu(sHead, inputPassword);
+            break;
         case 'A':
-            adminMenu(aHead);
-        break;
+            adminMenu(aHead, sHead, tHead);
+            break;
         default:
             printf("用户名或密码错误，请重试\n");
             pressAnyKeyToContinue();
-        break;
+            break;
     }
+}
+
+void passwordAppeal(const accNode* aHead, tNode* tHead) {
+    system("cls");
+    accNode* acc = aHead->next;
+    tNode* newTodo = createTodoNode();
+    getStringInput("请输入用户名（账号）：", newTodo->userName, sizeof(newTodo->userName));
+    while(acc) {
+        if(strcmp(acc->account.userName, newTodo->userName) == 0) {
+            appendTodoNodeAtTail(tHead, newTodo);
+            writeTodoToFile(tHead);
+            printf("密码申诉成功，请及时联系管理员帮你重置密码！\n");
+            printf("管理员邮箱：2869828375@qq.com\n");
+            break;
+        }
+        acc = acc->next;
+    }
+    if(acc == NULL) {
+        printf("用户名错误，请重试！\n");
+    }
+    pressAnyKeyToContinue();
 }
 
 void inputHiddenPassword(char* inputPassword) {
     int i = 0;
-    int input;
-    while((input = _getch()) != '\r') {
-        if(input == '\b') {
+    while(1) {
+        int input = _getch();
+        if(input == '\r') {
+            if(i > 0) break;
+        }else if(input == '\b') {
             if(i > 0) {
                 i--;
                 printf("\b \b");

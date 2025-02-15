@@ -3,11 +3,13 @@
 int main() {
     accNode* aHead = createAccountNode();
     stuNode* sHead = createStudentNode();
+    tNode* tHead = createTodoNode();
     readAccountFromFile(aHead);
     readStudentFromFile(sHead);
+    readTodoFromFile(tHead);
     pressAnyKeyToContinue();
     system("cls");
-    mainMenu(aHead, sHead);
+    mainMenu(aHead, sHead, tHead);
     freeAccountList(aHead);
     freeStudentList(sHead);
     return 0;
@@ -30,13 +32,13 @@ void addAdmin(accNode* aHead) {
     pressAnyKeyToContinue();
 }
 
-void clearInputBuffer() {
-    while(getchar() != '\n');
-}
-
 void pressAnyKeyToContinue() {
     printf("请按任意键继续...\n");
     _getch();
+}
+
+void clearInputBuffer() {
+    while(getchar() != '\n');
 }
 
 int getValidInput(int min, int max) {
@@ -53,9 +55,18 @@ int getValidInput(int min, int max) {
 }
 
 void getStringInput(const char* prompt, char* input, int size) {
+    if(size == 0) return;
     printf("%s", prompt);
-    fgets(input, size, stdin);
-    input[strcspn(input, "\n")] = '\0';
+    if(fgets(input, size, stdin) == NULL) {
+        input[0] = '\0';
+        return;
+    }
+    char* end = strchr(input, '\n');
+    if(end) {
+        *end = '\0';
+    } else {
+        clearInputBuffer();
+    }
 }
 
 float getFloatInput(const char* prompt) {
@@ -93,6 +104,16 @@ stuNode* createStudentNode() {
     return newStuNode;
 }
 
+tNode* createTodoNode() {
+    tNode* newTNode = (tNode*)malloc(sizeof(tNode));
+    if(newTNode == NULL) {
+        perror("Error allocating memory");
+        exit(-1);
+    }
+    newTNode->next = NULL;
+    return newTNode;
+}
+
 void appendAccountNodeAtTail(accNode* aHead, accNode* newAccNode) {
     accNode* tail = aHead;
     while(tail->next != NULL) {
@@ -110,6 +131,15 @@ void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode) {
     newStuNode->next = NULL;
     newStuNode->prev = tail;
     tail->next = newStuNode;
+}
+
+void appendTodoNodeAtTail(tNode* tHead, tNode* newTNode) {
+    tNode* tail = tHead;
+    while(tail->next != NULL) {
+        tail = tail->next;
+    }
+    newTNode->next = NULL;
+    tail->next = newTNode;
 }
 
 void freeAccountList(accNode* aHead) {

@@ -3,14 +3,14 @@
 //
 #include "StudentManagementSystem.h"
 
-void teacherMenu(stuNode* sHead) {
+void teacherMenu(stuNode* sHead, char* password) {
     int choice = 0;
 
-    do {
+    while(1) {
         system("cls");
         displayTeacherMenu();
 
-        choice = getValidInput(0, 6);
+        choice = getValidInput(0, 7);
         switch(choice) {
             case 0:
                 return;
@@ -28,14 +28,17 @@ void teacherMenu(stuNode* sHead) {
                 pressAnyKeyToContinue();
                 break;
             case 5:
-                pagePrintingStudent(sHead, 1);
+                pagePrintingStudent(sHead, 10);
+                break;
+            case 7:
+                changePassword(password);
                 break;
             default :
-                printf("输入不合法，请输入0~2之间的整数\n");
+                printf("输入不合法，请输入0~7之间的整数\n");
                 pressAnyKeyToContinue();
                 break;
         }
-    } while(choice);
+    }
 }
 
 void displayTeacherMenu() {
@@ -46,6 +49,7 @@ void displayTeacherMenu() {
     printf("4.查询学生信息\n");
     printf("5.查看所有学生信息\n");
     printf("6.成绩分析\n");
+    printf("7.修改密码\n");
     printf("0.返回上一级\n");
 }
 
@@ -83,7 +87,6 @@ void addStudent(stuNode* sHead) {
 }
 
 void deleteStudent(stuNode* sHead) {
-    system("cls");
     stuNode* stu = findStudent(sHead);
     if(stu != NULL) {
         char choice;
@@ -106,7 +109,6 @@ void deleteStudent(stuNode* sHead) {
 }
 
 void changeStudent(stuNode* sHead) {
-    system("cls");
     stuNode* stu = findStudent(sHead);
     if(stu != NULL) {
         printf("请输入修改后的学生成绩：\n");
@@ -134,7 +136,7 @@ stuNode* findStudent(stuNode* sHead) {
         cur = cur->next;
     }
     printf("没有找到该学生信息！！！\n");
-    return NULL;
+    return cur;
 }
 
 void pagePrintingStudent(const stuNode* sHead, int pageSize) {
