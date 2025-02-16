@@ -32,3 +32,10 @@
 917	1016	7613937505948195	StudentManagementSystem.exe	468cf00dfea65737
 12	650	7613938657462017	CMakeFiles/StudentManagementSystem.dir/student.c.obj	7da0f209298c9c9e
 651	740	7613938663851094	StudentManagementSystem.exe	468cf00dfea65737
+12	889	7613999889115520	CMakeFiles/StudentManagementSystem.dir/main.c.obj	e87564baee73b659
+45	891	7613999889444361	CMakeFiles/StudentManagementSystem.dir/teacher.c.obj	82d2287ed1b71e2d
+23	894	7613999889227778	CMakeFiles/StudentManagementSystem.dir/login.c.obj	43a0cc1c8d45bc48
+54	898	7613999889539302	CMakeFiles/StudentManagementSystem.dir/file.c.obj	51833ca67c7591ae
+35	905	7613999889343628	CMakeFiles/StudentManagementSystem.dir/student.c.obj	7da0f209298c9c9e
+63	917	7613999889627088	CMakeFiles/StudentManagementSystem.dir/admin.c.obj	428c89c3ab0994ff
+917	1020	7613999898163912	StudentManagementSystem.exe	468cf00dfea65737

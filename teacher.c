@@ -209,7 +209,6 @@ float compareStudents(const stuNode* s1, const stuNode* s2, int criteria) {
     }
 }
 
-
 stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria) {
     stuNode dummy;
     dummy.next = NULL;

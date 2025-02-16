@@ -79,6 +79,8 @@ void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class);
 void changePassword(char* oldPassword);
 char* setPassword(char* password1, char* password2);
 void scoreAnalysis(stuNode* sHead, stuNode* myself);
+float getScoreBySubject(stuNode* node, int subject);
+const char* getSubjectName(int subject);
 
 void teacherMenu(stuNode* sHead, char* password);
 void displayTeacherMenu();
