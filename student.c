@@ -1,6 +1,3 @@
-//
-// Created by yaoheng on 25-2-5.
-//
 #include "StudentManagementSystem.h"
 
 void studentMenu(stuNode* sHead, const char* userName, char* password) {
@@ -21,7 +18,7 @@ void studentMenu(stuNode* sHead, const char* userName, char* password) {
     while(1) {
         system("cls");
         displayStudentMenu();
-        choice = getValidInput(0, 4);
+        choice = getValidInput(0, 5);
         switch(choice) {
             case 0:
                 return;
@@ -30,6 +27,9 @@ void studentMenu(stuNode* sHead, const char* userName, char* password) {
                 break;
             case 2:
                 pagePrintingOneClassStudent(sHead, 10, myself->student.class);
+                break;
+            case 3:
+                scoreAnalysis(sHead, myself);
                 break;
             case 4:
                 changePassword(password);
@@ -141,7 +141,7 @@ void changePassword(char* oldPassword) {
     pressAnyKeyToContinue();
 }
 
-char* setPassword(char *password1, char *password2) {
+char* setPassword(char* password1, char* password2) {
     while(1){
         printf("请输入新密码：");
         inputHiddenPassword(password1);
@@ -155,6 +155,111 @@ char* setPassword(char *password1, char *password2) {
     }
 }
 
+void scoreAnalysis(stuNode* sHead, stuNode* myself) {
+    system("cls");
+    int ranking[8] = {1, 1, 1, 1, 1, 1, 1, 1};
+    float maxScore[8];
+    float averageScore[8];
+    for(int i = 0; i < 8; i++) {
+        int num = 0;
+        float sum = 0;
+        stuNode* copyList = copyStudentList(sHead->next);
+        stuNode* sortedList = mergeSortStudentByCriteria(copyList, i);
+        stuNode* temp = sortedList;
+        while(temp) {
+            num++;
+            switch(i) {
+                case 0:
+                    if(num == 1) {
+                        maxScore[0] = temp->student.score.total;
+                    }
+                    if(temp->student.score.total > myself->student.score.total) {
+                        ranking[0]++;
+                    }
+                    sum += temp->student.score.total;
+                    break;
+                case 1:
+                    if(num == 1) {
+                        maxScore[1] = temp->student.score.chinese;
+                    }
+                    if(temp->student.score.chinese > myself->student.score.chinese) {
+                        ranking[1]++;
+                    }
+                    sum += temp->student.score.chinese;
+                    break;
+                case 2:
+                    if(num == 1) {
+                        maxScore[2] = temp->student.score.math;
+                    }
+                    if(temp->student.score.math > myself->student.score.math) {
+                        ranking[2]++;
+                    }
+                    sum += temp->student.score.math;
+                    break;
+                case 3:
+                    if(num == 1) {
+                        maxScore[3] = temp->student.score.english;
+                    }
+                    if(temp->student.score.english > myself->student.score.english) {
+                        ranking[3]++;
+                    }
+                    sum += temp->student.score.english;
+                    break;
+                case 4:
+                    if(num == 1) {
+                        maxScore[4] = temp->student.score.lizong;
+                    }
+                    if(temp->student.score.lizong > myself->student.score.lizong) {
+                        ranking[4]++;
+                    }
+                    sum += temp->student.score.lizong;
+                    break;
+                case 5:
+                    if(num == 1) {
+                        maxScore[5] = temp->student.score.physics;
+                    }
+                    if(temp->student.score.physics > myself->student.score.physics) {
+                        ranking[5]++;
+                    }
+                    sum += temp->student.score.physics;
+                    break;
+                case 6:
+                    if(num == 1) {
+                        maxScore[6] = temp->student.score.chemistry;
+                    }
+                    if(temp->student.score.chemistry > myself->student.score.chemistry) {
+                        ranking[6]++;
+                    }
+                    sum += temp->student.score.chemistry;
+                    break;
+                case 7:
+                    if(num == 1) {
+                        maxScore[7] = temp->student.score.biology;
+                    }
+                    if(temp->student.score.biology > myself->student.score.biology) {
+                        ranking[7]++;
+                    }
+                    sum += temp->student.score.biology;
+                    break;
+                default:
+                    break;
+            }
+            temp = temp->next;
+        }
+        averageScore[i] = sum / num;
+        freeStudentList(sortedList);
+    }
+    printf("科目\t分数\t名次\t平均分\t最高分\t差距分\t\n");
+    printf("总分\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.total, ranking[0], averageScore[0], maxScore[0], myself->student.score.total - maxScore[0]);
+    printf("语文\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.chinese, ranking[1], averageScore[1], maxScore[1], myself->student.score.chinese - maxScore[1]);
+    printf("数学\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.math, ranking[2], averageScore[2], maxScore[2], myself->student.score.math - maxScore[2]);
+    printf("英语\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.english, ranking[3], averageScore[3], maxScore[3], myself->student.score.english - maxScore[3]);
+    printf("理综\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.lizong, ranking[4], averageScore[4], maxScore[4], myself->student.score.lizong - maxScore[4]);
+    printf("物理\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.physics, ranking[5], averageScore[5], maxScore[5], myself->student.score.physics - maxScore[5]);
+    printf("化学\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.chemistry, ranking[6], averageScore[6], maxScore[6], myself->student.score.chemistry - maxScore[6]);
+    printf("生物\t%g\t%d\t%.2f\t%g\t%g\t\n", myself->student.score.biology, ranking[7], averageScore[7], maxScore[7], myself->student.score.biology - maxScore[7]);
+    pressAnyKeyToContinue();
+}
 
 
 

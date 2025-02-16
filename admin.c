@@ -212,7 +212,7 @@ void printTodo(const tNode* tHead, int count) {
     pressAnyKeyToContinue();
 }
 
-void finishTodo(accNode* aHead, tNode* tHead, int* count) {
+void finishTodo(const accNode* aHead, tNode* tHead, int* count) {
     system("cls");
     while(tHead->next) {
         accNode* acc = aHead->next;

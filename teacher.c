@@ -1,6 +1,3 @@
-//
-// Created by yaoheng on 25-2-5.
-//
 #include "StudentManagementSystem.h"
 
 void teacherMenu(stuNode* sHead, char* password) {
@@ -28,7 +25,9 @@ void teacherMenu(stuNode* sHead, char* password) {
                 pressAnyKeyToContinue();
                 break;
             case 5:
-                pagePrintingStudent(sHead, 10);
+                pagePrintingStudent(sHead, 30);
+                break;
+            case 6:
                 break;
             case 7:
                 changePassword(password);
@@ -210,25 +209,29 @@ float compareStudents(const stuNode* s1, const stuNode* s2, int criteria) {
     }
 }
 
+
 stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria) {
-    stuNode* mergeHead = NULL;
-    if(head1 == NULL) {
-        return head2;
+    stuNode dummy;
+    dummy.next = NULL;
+    stuNode* tail = &dummy;
+    while(head1 && head2) {
+        if(compareStudents(head1, head2, criteria) >= 0) {
+            tail->next = head1;
+            head1 = head1->next;
+        } else {
+            tail->next = head2;
+            head2 = head2->next;
+        }
+        tail = tail->next;
     }
-    if(head2 == NULL) {
-        return head1;
-    }
-    if(compareStudents(head1, head2, criteria) >= 0.0f) {
-        mergeHead = head1;
-        mergeHead->next = mergeStudentByCriteria(head1->next, head2, criteria);
-    } else {
-        mergeHead = head2;
-        mergeHead->next = mergeStudentByCriteria(head1, head2->next, criteria);
-    }
-    return mergeHead;
+    tail->next = head1 ? head1 : head2;
+    return dummy.next;
 }
 
 stuNode* splitStudent(stuNode* head) {
+    if(head == NULL || head->next == NULL) {
+        return NULL;
+    }
     stuNode* fast = head->next;
     stuNode* slow = head;
     while(fast && fast->next) {

@@ -159,3 +159,17 @@ void freeStudentList(stuNode* sHead) {
         free(del);
     }
 }
+
+stuNode* copyStudentList(stuNode* head) {
+    stuNode dummy;
+    stuNode* tail = &dummy;
+    while(head != NULL) {
+        stuNode* newStuNode = createStudentNode();
+        newStuNode->student = head->student;
+        newStuNode->prev = tail;
+        tail->next = newStuNode;
+        tail = tail->next;
+        head = head->next;
+    }
+    return dummy.next;
+}

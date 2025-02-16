@@ -1,7 +1,3 @@
-//
-// Created by yaoheng on 25-2-5.
-//
-
 #ifndef STUDENTMANAGEMENTSYSTEM_H
 #define STUDENTMANAGEMENTSYSTEM_H
 
@@ -67,11 +63,11 @@ void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode);
 void appendTodoNodeAtTail(tNode* tHead, tNode* newTNode);
 void freeAccountList(accNode* aHead);
 void freeStudentList(stuNode* sHead);
-
+stuNode* copyStudentList(stuNode* head);
 void mainMenu(accNode* aHead, stuNode* sHead, tNode* tHead);
 void displayMainMenu();
 void userLogin(accNode* aHead, stuNode* sHead, tNode* tHead);
-void passwordAppeal(const accNode* aHead, tNode* tHead)
+void passwordAppeal(const accNode* aHead, tNode* tHead);
 void inputHiddenPassword(char* inputPassword);
 char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword);
 
@@ -81,7 +77,8 @@ void displayStudentMenu();
 void queryResults(const stuNode* myself);
 void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class);
 void changePassword(char* oldPassword);
-char* setPassword(char *password1, char *password2);
+char* setPassword(char* password1, char* password2);
+void scoreAnalysis(stuNode* sHead, stuNode* myself);
 
 void teacherMenu(stuNode* sHead, char* password);
 void displayTeacherMenu();
@@ -91,7 +88,7 @@ void deleteStudent(stuNode* sHead);
 void changeStudent(stuNode* sHead);
 stuNode* findStudent(stuNode* sHead);
 void pagePrintingStudent(const stuNode* sHead, int pageSize);
-float compareStudents(const stuNode* s1, const stuNode* s2, int criteria);
+float compareStudents(const stuNode* s2, const stuNode* s1, int criteria);
 stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria);
 stuNode* splitStudent(stuNode* head);
 stuNode* mergeSortStudentByCriteria(stuNode* head, int criteria);
@@ -104,7 +101,7 @@ void changeAccount(accNode* aHead);
 accNode* findPrevAccount(accNode* aHead);
 void pagePrintingAccount(const accNode* aHead, int pageSize);
 void printTodo(const tNode* tHead, int count);
-void finishTodo(accNode* aHead, tNode* tHead, int* count);
+void finishTodo(const accNode* aHead, tNode* tHead, int* count);
 char selectIdentify();
 
 void writeAccountToFile(const accNode* aHead);
