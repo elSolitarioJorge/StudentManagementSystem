@@ -11,39 +11,36 @@ void adminMenu(accNode* aHead, stuNode* sHead, tNode* tHead) {
     while(1) {
         system("cls");
         displayAdminMenu(count);
-
-        choice = getValidInput(0, 8);
+        choice = _getch();
         switch(choice) {
-            case 0:
+            case '0':
                 return;
-            case 1:
+            case '1':
                 addAccount(aHead);
                 break;
-            case 2:
+            case '2':
                 deleteAccount(aHead);
                 break;
-            case 3:
+            case '3':
                 changeAccount(aHead);
                 break;
-            case 4:
+            case '4':
                 findPrevAccount(aHead);
                 pressAnyKeyToContinue();
                 break;
-            case 5:
+            case '5':
                 pagePrintingAccount(aHead, 12);
                 break;
-            case 6:
+            case '6':
                 printTodo(tHead, count);
                 break;
-            case 7:
+            case '7':
                 finishTodo(aHead, tHead, &count);
                 break;
-            case 8:
+            case '8':
                 teacherMenu(sHead, "");
                 break;
             default :
-                printf("输入不合法，请输入0~8之间的整数\n");
-                pressAnyKeyToContinue();
                 break;
         }
     }

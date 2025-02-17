@@ -18,20 +18,20 @@ void studentMenu(stuNode* sHead, const char* userName, char* password) {
     while(1) {
         system("cls");
         displayStudentMenu();
-        choice = getValidInput(0, 5);
+        choice = _getch();
         switch(choice) {
-            case 0:
+            case '0':
                 return;
-            case 1:
+            case '1':
                 queryResults(myself);
                 break;
-            case 2:
+            case '2':
                 pagePrintingOneClassStudent(sHead, 10, myself->student.class);
                 break;
-            case 3:
+            case '3':
                 scoreAnalysis(sHead, myself);
                 break;
-            case 4:
+            case '4':
                 changePassword(password);
                 break;
             default:

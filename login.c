@@ -1,29 +1,24 @@
 #include "StudentManagementSystem.h"
 
 void mainMenu(accNode* aHead, stuNode* sHead, tNode* tHead) {
-
     int choice = 0;
-
     while(1) {
-
         system("cls");
         displayMainMenu();
-
-        choice = getValidInput(0, 2);
+        choice = _getch();
         switch(choice) {
-            case 0://退出程序
+            case '0'://退出程序
+                system("cls");
                 printf("谢谢使用，再见！\n");
                 pressAnyKeyToContinue();
                 exit(0);
-            case 1://用户登录
+            case '1'://用户登录
                 userLogin(aHead, sHead, tHead);
                 break;
-            case 2://忘记密码
+            case '2'://忘记密码
                 passwordAppeal(aHead, tHead);
                 break;
             default:
-                printf("输入不合法，请输入0~2之间的整数\n");
-                pressAnyKeyToContinue();
                 break;
         }
     }

@@ -7,34 +7,32 @@ void teacherMenu(stuNode* sHead, char* password) {
         system("cls");
         displayTeacherMenu();
 
-        choice = getValidInput(0, 7);
+        choice = _getch();
         switch(choice) {
-            case 0:
+            case '0':
                 return;
-            case 1:
+            case '1':
                 addStudent(sHead);
                 break;
-            case 2:
+            case '2':
                 deleteStudent(sHead);
                 break;
-            case 3:
+            case '3':
                 changeStudent(sHead);
                 break;
-            case 4:
+            case '4':
                 findStudent(sHead);
                 pressAnyKeyToContinue();
                 break;
-            case 5:
+            case '5':
                 pagePrintingStudent(sHead, 30);
                 break;
-            case 6:
+            case '6':
                 break;
-            case 7:
+            case '7':
                 changePassword(password);
                 break;
             default :
-                printf("输入不合法，请输入0~7之间的整数\n");
-                pressAnyKeyToContinue();
                 break;
         }
     }
