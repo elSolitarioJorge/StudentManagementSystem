@@ -1,29 +1,29 @@
 #include "StudentManagementSystem.h"
 
-void writeAccountToFile(const accNode* aHead) {
+void writeAccountToFile(const AccNode* aHead) {
     FILE* fp = fopen("account.txt", "wb");
     if (fp == NULL) {
         perror("Error opening account.txt");
         return;
     }
-    accNode* cur = aHead->next;
+    AccNode* cur = aHead->next;
     while(cur != NULL) {
-        fwrite(&(cur->account), sizeof(Acc), 1, fp);
+        fwrite(&(cur->account), sizeof(Account), 1, fp);
         cur = cur->next;
     }
     printf("账户信息写入成功\n");
     fclose(fp);
 }
 
-void writeStudentToFile(const stuNode* sHead) {
+void writeStudentToFile(const StuNode* sHead) {
     FILE* fp = fopen("student.txt", "wb");
     if (fp == NULL) {
         perror("Error opening student.txt");
         return;
     }
-    stuNode* cur = sHead->next;
+    StuNode* cur = sHead->next;
     while(cur != NULL) {
-        if(fwrite(&(cur->student), sizeof(Stu), 1, fp) != 1) {
+        if(fwrite(&(cur->student), sizeof(Student), 1, fp) != 1) {
             perror("Error writing to student.txt");
             fclose(fp);
             return;
@@ -34,13 +34,13 @@ void writeStudentToFile(const stuNode* sHead) {
     fclose(fp);
 }
 
-void writeTodoToFile(const tNode* tHead) {
+void writeTodoToFile(const TNode* tHead) {
     FILE* fp = fopen("todo.txt", "wb");
     if (fp == NULL) {
         perror("Error opening todo.txt");
         return;
     }
-    tNode* cur = tHead->next;
+    TNode* cur = tHead->next;
     while(cur != NULL) {
         if(fwrite(cur->userName, sizeof(cur->userName), 1, fp) != 1) {
             perror("Error writing to todo.txt");
@@ -53,15 +53,15 @@ void writeTodoToFile(const tNode* tHead) {
     fclose(fp);
 }
 
-void readAccountFromFile(accNode* aHead) {
+void readAccountFromFile(AccNode* aHead) {
     FILE* fp = fopen("account.txt", "rb");
     if(fp == NULL) {
         perror("Error opening account.txt");
         return;
     }
-    Acc account;
-    while(fread(&account, sizeof(Acc), 1, fp) == 1) {
-        accNode* newAccNode = createAccountNode();
+    Account account;
+    while(fread(&account, sizeof(Account), 1, fp) == 1) {
+        AccNode* newAccNode = createAccountNode();
         newAccNode->account = account;
         appendAccountNodeAtTail(aHead, newAccNode);
     }
@@ -69,15 +69,15 @@ void readAccountFromFile(accNode* aHead) {
     fclose(fp);
 }
 
-void readStudentFromFile(stuNode* sHead) {
+void readStudentFromFile(StuNode* sHead) {
     FILE* fp = fopen("student.txt", "rb");
     if(fp == NULL) {
         perror("Error opening student.txt");
         return;
     }
-    Stu student;
-    while(fread(&student, sizeof(Stu), 1, fp) == 1) {
-        stuNode* newStuNode = createStudentNode();
+    Student student;
+    while(fread(&student, sizeof(Student), 1, fp) == 1) {
+        StuNode* newStuNode = createStudentNode();
         newStuNode->student = student;
         appendStudentNodeAtTail(sHead, newStuNode);
     }
@@ -85,7 +85,7 @@ void readStudentFromFile(stuNode* sHead) {
     fclose(fp);
 }
 
-void readTodoFromFile(tNode* tHead) {
+void readTodoFromFile(TNode* tHead) {
     FILE* fp = fopen("todo.txt", "rb");
     if(fp == NULL) {
         perror("Error opening todo.txt");
@@ -93,7 +93,7 @@ void readTodoFromFile(tNode* tHead) {
     }
     char userName[20];
     while(fread(userName, sizeof(userName), 1, fp) == 1) {
-        tNode* newTNode = createTodoNode();
+        TNode* newTNode = createTodoNode();
         strcpy(newTNode->userName, userName);
         appendTodoNodeAtTail(tHead, newTNode);
     }

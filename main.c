@@ -1,9 +1,9 @@
 #include "StudentManagementSystem.h"
 
 int main() {
-    accNode* aHead = createAccountNode();
-    stuNode* sHead = createStudentNode();
-    tNode* tHead = createTodoNode();
+    AccNode* aHead = createAccountNode();
+    StuNode* sHead = createStudentNode();
+    TNode* tHead = createTodoNode();
     readAccountFromFile(aHead);
     readStudentFromFile(sHead);
     readTodoFromFile(tHead);
@@ -15,8 +15,8 @@ int main() {
     return 0;
 }
 
-void addAdmin(accNode* aHead) {
-    accNode* admin = (accNode*)malloc(sizeof(accNode));
+void addAdmin(AccNode* aHead) {
+    AccNode* admin = (AccNode*)malloc(sizeof(AccNode));
     if(admin == NULL) {
         perror("Error allocating memory");
         pressAnyKeyToContinue();
@@ -83,8 +83,8 @@ float getFloatInput(const char* prompt) {
     }
 }
 
-accNode* createAccountNode() {
-    accNode* newAccNode = (accNode*)malloc(sizeof(accNode));
+AccNode* createAccountNode() {
+    AccNode* newAccNode = (AccNode*)malloc(sizeof(AccNode));
     if(newAccNode == NULL) {
         perror("Error allocating memory");
         exit(-1);
@@ -93,8 +93,8 @@ accNode* createAccountNode() {
     return newAccNode;
 }
 
-stuNode* createStudentNode() {
-    stuNode* newStuNode = (stuNode*)malloc(sizeof(stuNode));
+StuNode* createStudentNode() {
+    StuNode* newStuNode = (StuNode*)malloc(sizeof(StuNode));
     if(newStuNode == NULL) {
         perror("Error allocating memory");
         exit(-1);
@@ -104,8 +104,8 @@ stuNode* createStudentNode() {
     return newStuNode;
 }
 
-tNode* createTodoNode() {
-    tNode* newTNode = (tNode*)malloc(sizeof(tNode));
+TNode* createTodoNode() {
+    TNode* newTNode = (TNode*)malloc(sizeof(TNode));
     if(newTNode == NULL) {
         perror("Error allocating memory");
         exit(-1);
@@ -114,8 +114,8 @@ tNode* createTodoNode() {
     return newTNode;
 }
 
-void appendAccountNodeAtTail(accNode* aHead, accNode* newAccNode) {
-    accNode* tail = aHead;
+void appendAccountNodeAtTail(AccNode* aHead, AccNode* newAccNode) {
+    AccNode* tail = aHead;
     while(tail->next != NULL) {
         tail = tail->next;
     }
@@ -123,8 +123,8 @@ void appendAccountNodeAtTail(accNode* aHead, accNode* newAccNode) {
     tail->next = newAccNode;
 }
 
-void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode) {
-    stuNode* tail = sHead;
+void appendStudentNodeAtTail(StuNode* sHead, StuNode* newStuNode) {
+    StuNode* tail = sHead;
     while(tail->next != NULL) {
         tail = tail->next;
     }
@@ -133,8 +133,8 @@ void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode) {
     tail->next = newStuNode;
 }
 
-void appendTodoNodeAtTail(tNode* tHead, tNode* newTNode) {
-    tNode* tail = tHead;
+void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode) {
+    TNode* tail = tHead;
     while(tail->next != NULL) {
         tail = tail->next;
     }
@@ -142,29 +142,29 @@ void appendTodoNodeAtTail(tNode* tHead, tNode* newTNode) {
     tail->next = newTNode;
 }
 
-void freeAccountList(accNode* aHead) {
-    accNode* cur = aHead;
+void freeAccountList(AccNode* aHead) {
+    AccNode* cur = aHead;
     while(cur != NULL) {
-        accNode* del = cur;
+        AccNode* del = cur;
         cur = cur->next;
         free(del);
     }
 }
 
-void freeStudentList(stuNode* sHead) {
-    stuNode* cur = sHead;
+void freeStudentList(StuNode* sHead) {
+    StuNode* cur = sHead;
     while(cur != NULL) {
-        stuNode* del = cur;
+        StuNode* del = cur;
         cur = cur->next;
         free(del);
     }
 }
 
-stuNode* copyStudentList(stuNode* head) {
-    stuNode dummy;
-    stuNode* tail = &dummy;
+StuNode* copyStudentList(StuNode* head) {
+    StuNode dummy;
+    StuNode* tail = &dummy;
     while(head != NULL) {
-        stuNode* newStuNode = createStudentNode();
+        StuNode* newStuNode = createStudentNode();
         newStuNode->student = head->student;
         newStuNode->prev = tail;
         tail->next = newStuNode;

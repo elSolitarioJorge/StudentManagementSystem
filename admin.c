@@ -1,9 +1,9 @@
 #include "StudentManagementSystem.h"
 
-void adminMenu(accNode* aHead, stuNode* sHead, tNode* tHead) {
+void adminMenu(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     int choice = 0;
     int count = 0;
-    tNode* temp = tHead->next;
+    TNode* temp = tHead->next;
     while(temp != NULL) {
         count++;
         temp = temp->next;
@@ -59,9 +59,9 @@ void displayAdminMenu(int count) {
     printf("0.返回上一级\n");
 }
 
-void addAccount(accNode* aHead) {
+void addAccount(AccNode* aHead) {
     system("cls");
-    accNode* newAccount = createAccountNode();
+    AccNode* newAccount = createAccountNode();
     printf("---添加账户---\n");
     printf("请选择账户身份（S：学生  T：教师  A：管理员）：");
     newAccount->account.role = selectIdentify();
@@ -81,15 +81,15 @@ void addAccount(accNode* aHead) {
     pressAnyKeyToContinue();
 }
 
-void deleteAccount(accNode* aHead) {
-    accNode* prevAcc = findPrevAccount(aHead);
+void deleteAccount(AccNode* aHead) {
+    AccNode* prevAcc = findPrevAccount(aHead);
     if(prevAcc != NULL) {
         char choice;
         printf("是否确认删除此账户(Y/N):");
         scanf(" %c", &choice);
         clearInputBuffer();
         if(choice == 'Y' || choice == 'y') {
-            accNode* delAcc = prevAcc->next;
+            AccNode* delAcc = prevAcc->next;
             prevAcc->next = delAcc->next;
             free(delAcc);
             writeAccountToFile(aHead);
@@ -101,8 +101,8 @@ void deleteAccount(accNode* aHead) {
     pressAnyKeyToContinue();
 }
 
-void changeAccount(accNode* aHead) {
-    accNode* cur = findPrevAccount(aHead)->next;
+void changeAccount(AccNode* aHead) {
+    AccNode* cur = findPrevAccount(aHead)->next;
     if(cur) {
         getStringInput("设置新密码：", cur->account.password, sizeof(cur->account.password));
         printf("设置新身份（S/T/A）：");
@@ -112,10 +112,10 @@ void changeAccount(accNode* aHead) {
     pressAnyKeyToContinue();
 }
 
-accNode* findPrevAccount(accNode* aHead) {
+AccNode* findPrevAccount(AccNode* aHead) {
     system("cls");
     char userName[20];
-    accNode* prev = aHead;
+    AccNode* prev = aHead;
     getStringInput("请输入用户名（账号）：", userName, sizeof(userName));
     while(prev->next != NULL) {
         if(strcmp(prev->next->account.userName, userName) == 0) {
@@ -144,8 +144,8 @@ accNode* findPrevAccount(accNode* aHead) {
     return prev;
 }
 
-void pagePrintingAccount(const accNode* aHead, int pageSize) {
-    accNode* cur = aHead->next;
+void pagePrintingAccount(const AccNode* aHead, int pageSize) {
+    AccNode* cur = aHead->next;
     int size = 0;
     while(cur != NULL) {
         size++;
@@ -158,7 +158,7 @@ void pagePrintingAccount(const accNode* aHead, int pageSize) {
         printf("---用户账密信息---\n\n");
         printf("账号\t\t用户身份\t密码\n");
         int count = 0;
-        accNode* temp = cur;
+        AccNode* temp = cur;
         while(temp && count < pageSize) {
             printf("%-16s", temp->account.userName);
             if(temp->account.role == 'S') {
@@ -198,9 +198,9 @@ void pagePrintingAccount(const accNode* aHead, int pageSize) {
     }
 }
 
-void printTodo(const tNode* tHead, int count) {
+void printTodo(const TNode* tHead, int count) {
     system("cls");
-    tNode* cur = tHead->next;
+    TNode* cur = tHead->next;
     printf("有%d个密码申诉代办，请尽快处理！\n", count);
     while(cur) {
         printf("用户名：%s\n", cur->userName);
@@ -209,10 +209,10 @@ void printTodo(const tNode* tHead, int count) {
     pressAnyKeyToContinue();
 }
 
-void finishTodo(const accNode* aHead, tNode* tHead, int* count) {
+void finishTodo(const AccNode* aHead, TNode* tHead, int* count) {
     system("cls");
     while(tHead->next) {
-        accNode* acc = aHead->next;
+        AccNode* acc = aHead->next;
         while(acc) {
             if(strcmp(acc->account.userName, tHead->next->userName) == 0) {
                 if(acc->account.role == 'S') {
@@ -220,7 +220,7 @@ void finishTodo(const accNode* aHead, tNode* tHead, int* count) {
                 } else {
                     strcpy(acc->account.password, "111111");
                 }
-                tNode* del = tHead->next;
+                TNode* del = tHead->next;
                 tHead->next = del->next;
                 free(del);
                 (*count)--;

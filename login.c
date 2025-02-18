@@ -1,6 +1,6 @@
 #include "StudentManagementSystem.h"
 
-void mainMenu(accNode* aHead, stuNode* sHead, tNode* tHead) {
+void mainMenu(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     int choice = 0;
     while(1) {
         system("cls");
@@ -31,7 +31,7 @@ void displayMainMenu() {
     printf("2.忘记密码\n");
 }
 
-void userLogin(accNode* aHead, stuNode* sHead, tNode* tHead) {
+void userLogin(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     char inputUserName[20] = "";
     char inputPassword[MAX_PASSWORD_LENGTH + 1] = "";
     system("cls");
@@ -56,10 +56,10 @@ void userLogin(accNode* aHead, stuNode* sHead, tNode* tHead) {
     }
 }
 
-void passwordAppeal(const accNode* aHead, tNode* tHead) {
+void passwordAppeal(const AccNode* aHead, TNode* tHead) {
     system("cls");
-    accNode* acc = aHead->next;
-    tNode* newTodo = createTodoNode();
+    AccNode* acc = aHead->next;
+    TNode* newTodo = createTodoNode();
     getStringInput("请输入用户名（账号）：", newTodo->userName, sizeof(newTodo->userName));
     while(acc) {
         if(strcmp(acc->account.userName, newTodo->userName) == 0) {
@@ -97,8 +97,8 @@ void inputHiddenPassword(char* inputPassword) {
     inputPassword[i] = '\0';
 }
 
-char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword) {
-    accNode* cur = aHead->next;
+char authentication(const AccNode* aHead, const char* inputUserName, const char* inputPassword) {
+    AccNode* cur = aHead->next;
     while(cur != NULL) {
         if(strcmp(cur->account.userName, inputUserName) == 0 && strcmp(cur->account.password, inputPassword) == 0) {
             return cur->account.role;

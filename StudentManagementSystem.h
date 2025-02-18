@@ -9,7 +9,7 @@
 
 #define MAX_PASSWORD_LENGTH 50
 
-typedef struct Score{
+typedef struct {
     float chinese;
     float math;
     float english;
@@ -18,105 +18,119 @@ typedef struct Score{
     float biology;
     float lizong;
     float total;
-} Sco;
+} Score;
 
-typedef struct Account {
+typedef struct {
     char userName[20];
     char password[MAX_PASSWORD_LENGTH + 1];
     char role;
-} Acc;
+} Account;
 
-typedef struct Student {
+typedef struct {
     char name[50];
     char id[20];
     int class;
-    Sco score;
-} Stu;
+    Score score;
+} Student;
 
 typedef struct studentList {
-    Stu student;
+    Student student;
     struct studentList* prev;
     struct studentList* next;
-} stuNode;
+} StuNode;
 
 typedef struct accountList {
-    Acc account;
+    Account account;
     struct accountList* next;
-} accNode;
+} AccNode;
 
 typedef struct todoList {
     char userName[20];
     struct todoList* next;
-} tNode;
+} TNode;
 
-void addAdmin(accNode* aHead);
+typedef struct {
+    int class;
+    int subject;
+    float minScore;
+    float maxScore;
+    int intervalSize;
+    int intervalCount;
+    int intervals[20];
+    int maxCount;
+    int totalCount;
+}ScoreDistribution;
+
+void addAdmin(AccNode* aHead);
 void pressAnyKeyToContinue();
 void clearInputBuffer();
 int getValidInput(int min, int max);
 void getStringInput(const char* prompt, char* input, int size);
 float getFloatInput(const char* prompt);
-accNode* createAccountNode();
-stuNode* createStudentNode();
-tNode* createTodoNode();
-void appendAccountNodeAtTail(accNode* aHead, accNode*  newAccNode);
-void appendStudentNodeAtTail(stuNode* sHead, stuNode* newStuNode);
-void appendTodoNodeAtTail(tNode* tHead, tNode* newTNode);
-void freeAccountList(accNode* aHead);
-void freeStudentList(stuNode* sHead);
-stuNode* copyStudentList(stuNode* head);
-void mainMenu(accNode* aHead, stuNode* sHead, tNode* tHead);
+AccNode* createAccountNode();
+StuNode* createStudentNode();
+TNode* createTodoNode();
+void appendAccountNodeAtTail(AccNode* aHead, AccNode*  newAccNode);
+void appendStudentNodeAtTail(StuNode* sHead, StuNode* newStuNode);
+void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode);
+void freeAccountList(AccNode* aHead);
+void freeStudentList(StuNode* sHead);
+StuNode* copyStudentList(StuNode* head);
+void mainMenu(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayMainMenu();
-void userLogin(accNode* aHead, stuNode* sHead, tNode* tHead);
-void passwordAppeal(const accNode* aHead, tNode* tHead);
+void userLogin(AccNode* aHead, StuNode* sHead, TNode* tHead);
+void passwordAppeal(const AccNode* aHead, TNode* tHead);
 void inputHiddenPassword(char* inputPassword);
-char authentication(const accNode* aHead, const char* inputUserName, const char* inputPassword);
+char authentication(const AccNode* aHead, const char* inputUserName, const char* inputPassword);
 
 
-void studentMenu(stuNode* sHead, const char* userName, char* password);
+void studentMenu(StuNode* sHead, const char* userName, char* password);
 void displayStudentMenu();
-void queryResults(const stuNode* myself);
-void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class);
+void queryResults(const StuNode* myself);
+void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class);
 void changePassword(char* oldPassword);
 char* setPassword(char* password1, char* password2);
-void scoreAnalysis(stuNode* sHead, stuNode* myself);
-float getScoreBySubject(stuNode* node, int subject);
+void scoreAnalysis(StuNode* sHead, StuNode* myself);
+float getScoreBySubject(StuNode* node, int subject);
 const char* getSubjectName(int subject);
 
-void teacherMenu(stuNode* sHead, char* password);
+void teacherMenu(StuNode* sHead, char* password);
 void displayTeacherMenu();
-void enterScore(stuNode* student);
-void addStudent(stuNode* sHead);
-void deleteStudent(stuNode* sHead);
-void changeStudent(stuNode* sHead);
-stuNode* findStudent(stuNode* sHead);
-void pagePrintingStudent(const stuNode* sHead, int pageSize);
-float compareStudents(const stuNode* s2, const stuNode* s1, int criteria);
-stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria);
-stuNode* splitStudent(stuNode* head);
-stuNode* mergeSortStudentByCriteria(stuNode* head, int criteria);
+void enterScore(StuNode* student);
+void addStudent(StuNode* sHead);
+void deleteStudent(StuNode* sHead);
+void changeStudent(StuNode* sHead);
+StuNode* findStudent(StuNode* sHead);
+void pagePrintingStudent(const StuNode* sHead, int pageSize);
+float compareStudents(const StuNode* s2, const StuNode* s1, int criteria);
+void analyzeScoreDistribution(StuNode* sHead);
+StuNode* mergeStudentByCriteria(StuNode* head1, StuNode* head2, int criteria);
+StuNode* splitStudent(StuNode* head);
+StuNode* mergeSortStudentByCriteria(StuNode* head, int criteria);
+int getFullScoreBySubject(int subject);
+int getIntervalSize(int subject);
+void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char labels [][20], int* count);
+ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject);
+void drawBarChart(const ScoreDistribution* current);
 
-void adminMenu(accNode* aHead, stuNode* sHead, tNode* tHead);
+
+void adminMenu(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayAdminMenu(int count);
-void addAccount(accNode* aHead);
-void deleteAccount(accNode* aHead);
-void changeAccount(accNode* aHead);
-accNode* findPrevAccount(accNode* aHead);
-void pagePrintingAccount(const accNode* aHead, int pageSize);
-void printTodo(const tNode* tHead, int count);
-void finishTodo(const accNode* aHead, tNode* tHead, int* count);
+void addAccount(AccNode* aHead);
+void deleteAccount(AccNode* aHead);
+void changeAccount(AccNode* aHead);
+AccNode* findPrevAccount(AccNode* aHead);
+void pagePrintingAccount(const AccNode* aHead, int pageSize);
+void printTodo(const TNode* tHead, int count);
+void finishTodo(const AccNode* aHead, TNode* tHead, int* count);
 char selectIdentify();
 
-void writeAccountToFile(const accNode* aHead);
-void writeStudentToFile(const stuNode* sHead);
-void writeTodoToFile(const tNode* tHead);
-void readAccountFromFile(accNode* aHead);
-void readStudentFromFile(stuNode* sHead);
-void readTodoFromFile(tNode* tHead);
-
-
-
-
-
+void writeAccountToFile(const AccNode* aHead);
+void writeStudentToFile(const StuNode* sHead);
+void writeTodoToFile(const TNode* tHead);
+void readAccountFromFile(AccNode* aHead);
+void readStudentFromFile(StuNode* sHead);
+void readTodoFromFile(TNode* tHead);
 
 
 

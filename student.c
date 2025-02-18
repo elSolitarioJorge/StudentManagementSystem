@@ -1,8 +1,8 @@
 #include "StudentManagementSystem.h"
 
-void studentMenu(stuNode* sHead, const char* userName, char* password) {
+void studentMenu(StuNode* sHead, const char* userName, char* password) {
     int choice = 0;
-    stuNode* myself = sHead->next;
+    StuNode* myself = sHead->next;
     while(myself != NULL) {
         if(strcmp(myself->student.id, userName) == 0) {
             break;
@@ -48,7 +48,7 @@ void displayStudentMenu() {
     printf("0.返回上一级\n");
 }
 
-void queryResults(const stuNode* myself) {
+void queryResults(const StuNode* myself) {
     system("cls");
     printf("学号：\t%s\n", myself->student.id);
     printf("姓名：\t%s\n", myself->student.name);
@@ -64,8 +64,8 @@ void queryResults(const stuNode* myself) {
     pressAnyKeyToContinue();
 }
 
-void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class) {
-    stuNode* cur = sHead->next;
+void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class) {
+    StuNode* cur = sHead->next;
     int size = 0;
     while(cur != NULL) {
         if(cur->student.class == class) {
@@ -81,7 +81,7 @@ void pagePrintingOneClassStudent(const stuNode* sHead, int pageSize, int class) 
         printf("\t\t-----2023-2024学年下学期高三2024届第四次模拟考试成绩单-----\n\n");
         printf("学号\t\t姓名\t班级\t语文\t数学\t英语\t理综\t物理\t化学\t生物\t总分\n");
         int count = 0;
-        stuNode* temp = cur;
+        StuNode* temp = cur;
         while(temp && count < pageSize) {
             if(temp->student.class == class) {
                 printf("%-16s%s\t%-8d%-8g%-8g%-8g%-8g%-8g%-8g%-8g%g\n",temp->student.id, temp->student.name, temp->student.class,
@@ -155,13 +155,13 @@ char* setPassword(char* password1, char* password2) {
     }
 }
 
-void scoreAnalysis(stuNode* sHead, stuNode* myself) {
+void scoreAnalysis(StuNode* sHead, StuNode* myself) {
     system("cls");
     int gradeRanking[8], classRanking[8];
     float gradeMaxScore[8], classMaxScore[8];
     float gradeAverageScore[8], classAverageScore[8];
     int gradeNum = 0, classNum = 0;
-    stuNode* temp = sHead->next;
+    StuNode* temp = sHead->next;
     while(temp) {
         gradeNum++;
         if(temp->student.class == myself->student.class) {
@@ -175,7 +175,7 @@ void scoreAnalysis(stuNode* sHead, stuNode* myself) {
         float gradeSum = 0, classSum = 0;
         gradeMaxScore[i] = 0, classMaxScore[i] = 0;
         gradeRanking[i] = 1, classRanking[i] = 1;
-        stuNode* current = sHead->next;
+        StuNode* current = sHead->next;
         while(current) {
             float score = getScoreBySubject(current, i);
             gradeSum += score;
@@ -224,7 +224,7 @@ void scoreAnalysis(stuNode* sHead, stuNode* myself) {
     } while(choice != '\r');
 }
 
-float getScoreBySubject(stuNode* node, int subject) {
+float getScoreBySubject(StuNode* node, int subject) {
     switch(subject) {
         case 0: return node->student.score.total;
         case 1: return node->student.score.chinese;

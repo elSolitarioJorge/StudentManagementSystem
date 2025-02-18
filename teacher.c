@@ -1,6 +1,6 @@
 #include "StudentManagementSystem.h"
 
-void teacherMenu(stuNode* sHead, char* password) {
+void teacherMenu(StuNode* sHead, char* password) {
     int choice = 0;
 
     while(1) {
@@ -28,6 +28,7 @@ void teacherMenu(stuNode* sHead, char* password) {
                 pagePrintingStudent(sHead, 30);
                 break;
             case '6':
+                analyzeScoreDistribution(sHead);
                 break;
             case '7':
                 changePassword(password);
@@ -50,7 +51,7 @@ void displayTeacherMenu() {
     printf("0.返回上一级\n");
 }
 
-void enterScore(stuNode* student) {
+void enterScore(StuNode* student) {
     student->student.score.chinese = getFloatInput("语文成绩：");
     student->student.score.math = getFloatInput("数学成绩：");
     student->student.score.english = getFloatInput("英语成绩：");
@@ -63,9 +64,9 @@ void enterScore(stuNode* student) {
                                       + student->student.score.english + student->student.score.lizong;
 }
 
-void addStudent(stuNode* sHead) {
+void addStudent(StuNode* sHead) {
     system("cls");
-    stuNode* newStudent = createStudentNode();
+    StuNode* newStudent = createStudentNode();
     printf("---添加学生信息---\n");
     getStringInput("学号：", newStudent->student.id, sizeof(newStudent->student.id));
     getStringInput("姓名：", newStudent->student.name, sizeof(newStudent->student.name));
@@ -83,8 +84,8 @@ void addStudent(stuNode* sHead) {
     pressAnyKeyToContinue();
 }
 
-void deleteStudent(stuNode* sHead) {
-    stuNode* stu = findStudent(sHead);
+void deleteStudent(StuNode* sHead) {
+    StuNode* stu = findStudent(sHead);
     if(stu != NULL) {
         char choice;
         printf("是否确认删除此学生(Y/N):");
@@ -105,8 +106,8 @@ void deleteStudent(stuNode* sHead) {
     pressAnyKeyToContinue();
 }
 
-void changeStudent(stuNode* sHead) {
-    stuNode* stu = findStudent(sHead);
+void changeStudent(StuNode* sHead) {
+    StuNode* stu = findStudent(sHead);
     if(stu != NULL) {
         printf("请输入修改后的学生成绩：\n");
         enterScore(stu);
@@ -116,9 +117,9 @@ void changeStudent(stuNode* sHead) {
     pressAnyKeyToContinue();
 }
 
-stuNode* findStudent(stuNode* sHead) {
+StuNode* findStudent(StuNode* sHead) {
     system("cls");
-    stuNode* cur = sHead->next;
+    StuNode* cur = sHead->next;
     char str[50];
     getStringInput("请输入学生姓名或学号：", str, sizeof(str));
     while(cur != NULL) {
@@ -136,8 +137,8 @@ stuNode* findStudent(stuNode* sHead) {
     return cur;
 }
 
-void pagePrintingStudent(const stuNode* sHead, int pageSize) {
-    stuNode* cur = sHead->next;
+void pagePrintingStudent(const StuNode* sHead, int pageSize) {
+    StuNode* cur = sHead->next;
     int size = 0;
     while(cur != NULL) {
         size++;
@@ -151,7 +152,7 @@ void pagePrintingStudent(const stuNode* sHead, int pageSize) {
         printf("\t\t-----2023-2024学年下学期高三2024届第四次模拟考试成绩单-----\n\n");
         printf("学号\t\t姓名\t班级\t语文\t数学\t英语\t理综\t物理\t化学\t生物\t总分\n");
         int count = 0;
-        stuNode* temp = cur;
+        StuNode* temp = cur;
         while(temp && count < pageSize) {
             printf("%-16s%s\t%-8d%-8g%-8g%-8g%-8g%-8g%-8g%-8g%g\n",temp->student.id, temp->student.name, temp->student.class,
                 temp->student.score.chinese, temp->student.score.math, temp->student.score.english, temp->student.score.lizong,
@@ -184,7 +185,7 @@ void pagePrintingStudent(const stuNode* sHead, int pageSize) {
     }
 }
 
-float compareStudents(const stuNode* s1, const stuNode* s2, int criteria) {
+float compareStudents(const StuNode* s1, const StuNode* s2, int criteria) {
     switch(criteria) {
         case 0:
             return s1->student.score.total - s2->student.score.total;
@@ -207,10 +208,10 @@ float compareStudents(const stuNode* s1, const stuNode* s2, int criteria) {
     }
 }
 
-stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria) {
-    stuNode dummy;
+StuNode* mergeStudentByCriteria(StuNode* head1, StuNode* head2, int criteria) {
+    StuNode dummy;
     dummy.next = NULL;
-    stuNode* tail = &dummy;
+    StuNode* tail = &dummy;
     while(head1 && head2) {
         if(compareStudents(head1, head2, criteria) >= 0) {
             tail->next = head1;
@@ -225,27 +226,144 @@ stuNode* mergeStudentByCriteria(stuNode* head1, stuNode* head2, int criteria) {
     return dummy.next;
 }
 
-stuNode* splitStudent(stuNode* head) {
+StuNode* splitStudent(StuNode* head) {
     if(head == NULL || head->next == NULL) {
         return NULL;
     }
-    stuNode* fast = head->next;
-    stuNode* slow = head;
+    StuNode* fast = head->next;
+    StuNode* slow = head;
     while(fast && fast->next) {
         fast = fast->next->next;
         slow = slow->next;
     }
-    stuNode* secondHalf = slow->next;
+    StuNode* secondHalf = slow->next;
     slow->next = NULL;
     return secondHalf;
 }
 
-stuNode*  mergeSortStudentByCriteria(stuNode* head, int criteria) {
+StuNode*  mergeSortStudentByCriteria(StuNode* head, int criteria) {
     if(head == NULL || head->next == NULL) {
         return head;
     }
-    stuNode* secondHalf = splitStudent(head);
+    StuNode* secondHalf = splitStudent(head);
     head = mergeSortStudentByCriteria(head, criteria);
     secondHalf = mergeSortStudentByCriteria(secondHalf, criteria);
     return mergeStudentByCriteria(head, secondHalf, criteria);
+}
+
+int getFullScoreBySubject(int subject) {
+    if(subject == 0) return 750;
+    if(subject == 4) return 300;
+    if(subject == 5) return 110;
+    if(subject == 6) return 100;
+    if(subject == 7) return 90;
+    return 150;
+}
+
+int getIntervalSize(int subject) {
+    if(subject == 0) return 50;//总分
+    if(subject == 4) return 20;//理综
+    return 10;
+}
+
+void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char labels [][20], int* count) {
+    *count = 0;
+    int start = ((int)minVal / intervalSize) * intervalSize;
+    int end = ((int)maxVal / intervalSize + 1) * intervalSize;
+    for(int i = end; i > start; i -= intervalSize) {
+        snprintf(labels[*count], 20, "[%d-%d):", i - intervalSize, i);
+        (*count)++;
+    }
+}
+
+ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) {
+    ScoreDistribution current;
+    current.class = class;
+    current.subject = subject;
+    current.minScore = 1000;
+    current.maxScore = -1;
+    current.maxCount = 0;
+    current.totalCount = 0;
+    current.intervalSize = getIntervalSize(subject);
+    StuNode* cur = sHead->next;
+    while(cur) {
+        if(class == 0 || cur->student.class == class) {
+            current.totalCount++;
+            float score = getScoreBySubject(cur, subject);
+            current.minScore = current.minScore < score ? current.minScore : score;
+            current.maxScore = current.maxScore > score ? current.maxScore : score;
+        }
+        cur = cur->next;
+    }
+    int intervalStart = ((int)current.minScore / current.intervalSize) * current.intervalSize;
+    int intervalEnd = ((int)current.maxScore / current.intervalSize + 1) * current.intervalSize;
+    intervalEnd = intervalEnd < getFullScoreBySubject(subject) ? intervalEnd : getFullScoreBySubject(subject);
+    current.intervalCount = (intervalEnd - intervalStart) / current.intervalSize;
+    memset(current.intervals, 0, sizeof(current.intervals));
+    cur = sHead->next;
+    while(cur) {
+        if(class == 0 || cur->student.class == class) {
+            float score = getScoreBySubject(cur, subject);
+            int index = ((int)score - intervalStart) / current.intervalSize;
+            current.intervals[index]++;
+            current.maxCount = current.maxCount > current.intervals[index] ? current.maxCount : current.intervals[index];
+        }
+        cur = cur->next;
+    }
+    return current;
+}
+
+void drawBarChart(const ScoreDistribution* current) {
+    char labels[20][20];
+    int labelCount = 0;
+    generateIntervalLabels(current->minScore, current->maxScore, current->intervalSize, labels, &labelCount);
+    printf("\n成绩分布: %g-%g\n", current->minScore, current->maxScore);
+    for(int i = 0; i < labelCount; i++) {
+        const int maxBarWidth = 100;
+        int barLength = current->maxCount ? (current->intervals[i] * maxBarWidth) / current->maxCount : 0;
+        printf("%-12s", labels[i]);
+        for(int j=0; j<barLength; j++) {
+            printf("■");
+        }
+        printf(" %d人", current->intervals[i]);
+        printf("\n");
+    }
+
+}
+
+void analyzeScoreDistribution(StuNode* sHead) {
+    int currentClass = 0, currentSubject = 0;
+    while(1) {
+        system("cls");
+        ScoreDistribution current = calculateDistribution(sHead, currentClass, currentSubject);
+        printf("科目：%s  |  ", getSubjectName(currentSubject));
+        if(currentClass) printf("%d班", currentClass);
+        else printf("年级");
+        printf("  |  总人数：%d\n", current.totalCount);
+        drawBarChart(&current);
+        printf("\n操作指南：\n");
+        printf("←→:切换科目 | %s | Q:退出\n", currentClass ?  "↑↓:调整班级 | G:年级视图" : "C:班级视图");
+        int input = _getch();
+        switch(input) {
+            case 75:
+                currentSubject = (currentSubject - 1 + 8) % 8;
+                break;
+            case 77:
+                currentSubject = (currentSubject + 1) % 8;
+                break;
+            case 'C':case'c':
+                currentClass = 1;
+                break;
+            case 72:
+                if(currentClass > 0 && currentClass < 25) currentClass++;
+                break;
+            case 80:
+                if(currentClass > 1) currentClass--;
+                break;
+            case 'Q':case'q':
+                return;
+            default:
+                break;
+        }
+    }
 }
