@@ -271,7 +271,7 @@ void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char l
     int start = ((int)minVal / intervalSize) * intervalSize;
     int end = ((int)maxVal / intervalSize + 1) * intervalSize;
     for(int i = end; i > start; i -= intervalSize) {
-        snprintf(labels[*count], 20, "[%d-%d):", i - intervalSize, i);
+        sprintf(labels[*count], "[%d-%d):", i - intervalSize, i);
         (*count)++;
     }
 }
@@ -304,7 +304,8 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) 
     while(cur) {
         if(class == 0 || cur->student.class == class) {
             float score = getScoreBySubject(cur, subject);
-            int index = ((int)score - intervalStart) / current.intervalSize;
+            int index = (intervalEnd - (int)score) / current.intervalSize;
+            if(score <= 0) index = current.intervalCount - 1;
             current.intervals[index]++;
             current.maxCount = current.maxCount > current.intervals[index] ? current.maxCount : current.intervals[index];
         }
@@ -319,16 +320,14 @@ void drawBarChart(const ScoreDistribution* current) {
     generateIntervalLabels(current->minScore, current->maxScore, current->intervalSize, labels, &labelCount);
     printf("\n成绩分布: %g-%g\n", current->minScore, current->maxScore);
     for(int i = 0; i < labelCount; i++) {
-        const int maxBarWidth = 100;
+        const int maxBarWidth = 150;
         int barLength = current->maxCount ? (current->intervals[i] * maxBarWidth) / current->maxCount : 0;
         printf("%-12s", labels[i]);
-        for(int j=0; j<barLength; j++) {
+        for(int j = 0; j < barLength; j++) {
             printf("■");
         }
-        printf(" %d人", current->intervals[i]);
-        printf("\n");
+        printf(" %d人\n", current->intervals[i]);
     }
-
 }
 
 void analyzeScoreDistribution(StuNode* sHead) {
@@ -359,6 +358,9 @@ void analyzeScoreDistribution(StuNode* sHead) {
                 break;
             case 80:
                 if(currentClass > 1) currentClass--;
+                break;
+            case 'G':case'g':
+                currentClass = 0;
                 break;
             case 'Q':case'q':
                 return;

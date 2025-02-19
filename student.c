@@ -169,7 +169,6 @@ void scoreAnalysis(StuNode* sHead, StuNode* myself) {
         }
         temp = temp->next;
     }
-
     for(int i = 0; i < 8; i++) {
         float myScore = getScoreBySubject(myself, i);
         float gradeSum = 0, classSum = 0;

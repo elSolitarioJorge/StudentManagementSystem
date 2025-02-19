@@ -131,8 +131,8 @@ void writeTodoToFile(const TNode* tHead);
 void readAccountFromFile(AccNode* aHead);
 void readStudentFromFile(StuNode* sHead);
 void readTodoFromFile(TNode* tHead);
-
-
+void importStudentToFile(const char* csvFileName, const char* binFileName);
+void importAccountToFile(const char* csvFileName, const char* binFileName);
 
 
 
