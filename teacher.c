@@ -2,11 +2,9 @@
 
 void teacherMenu(StuNode* sHead, char* password) {
     int choice = 0;
-
     while(1) {
         system("cls");
         displayTeacherMenu();
-
         choice = _getch();
         switch(choice) {
             case '0':
@@ -109,7 +107,16 @@ void deleteStudent(StuNode* sHead) {
 void changeStudent(StuNode* sHead) {
     StuNode* stu = findStudent(sHead);
     if(stu != NULL) {
-        printf("请输入修改后的学生成绩：\n");
+        printf("---修改学生信息---\n");
+        getStringInput("学号：", stu->student.id, sizeof(stu->student.id));
+        getStringInput("姓名：", stu->student.name, sizeof(stu->student.name));
+        printf("班级：");
+        stu->student.class = getValidInput(1, 25);
+        if(stu->student.class == -1) {
+            printf("输入不合法（直接输入学生所在班级的数字即可），修改失败！\n");
+            pressAnyKeyToContinue();
+            return;
+        }
         enterScore(stu);
         writeStudentToFile(sHead);
         printf("学生信息修改成功！\n");
