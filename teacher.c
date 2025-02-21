@@ -291,16 +291,25 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) 
     current.maxScore = -1;
     current.maxCount = 0;
     current.totalCount = 0;
+    current.absentCount = 0;
     current.intervalSize = getIntervalSize(subject);
     StuNode* cur = sHead->next;
     while(cur) {
         if(class == 0 || cur->student.class == class) {
+            if(cur->student.score.total == 0) {
+                current.absentCount++;
+            } else {
+                float score = getScoreBySubject(cur, subject);
+                current.minScore = current.minScore < score ? current.minScore : score;
+                current.maxScore = current.maxScore > score ? current.maxScore : score;
+            }
             current.totalCount++;
-            float score = getScoreBySubject(cur, subject);
-            current.minScore = current.minScore < score ? current.minScore : score;
-            current.maxScore = current.maxScore > score ? current.maxScore : score;
         }
         cur = cur->next;
+    }
+    if(current.totalCount == current.absentCount) {
+        current.minScore = 0;
+        current.maxScore = 0;
     }
     int intervalStart = ((int)current.minScore / current.intervalSize) * current.intervalSize;
     int intervalEnd = ((int)current.maxScore / current.intervalSize + 1) * current.intervalSize;
@@ -309,10 +318,10 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) 
     memset(current.intervals, 0, sizeof(current.intervals));
     cur = sHead->next;
     while(cur) {
-        if(class == 0 || cur->student.class == class) {
+        if((class == 0 || cur->student.class == class) && cur->student.score.total > 0) {
             float score = getScoreBySubject(cur, subject);
             int index = (intervalEnd - (int)score) / current.intervalSize;
-            if(score <= 0) index = current.intervalCount - 1;
+            index = index >= current.intervalCount ? current.intervalCount - 1 : index;
             current.intervals[index]++;
             current.maxCount = current.maxCount > current.intervals[index] ? current.maxCount : current.intervals[index];
         }
@@ -325,13 +334,13 @@ void drawBarChart(const ScoreDistribution* current) {
     char labels[20][20];
     int labelCount = 0;
     generateIntervalLabels(current->minScore, current->maxScore, current->intervalSize, labels, &labelCount);
-    printf("\n成绩分布: %g-%g\n", current->minScore, current->maxScore);
+    printf("\n成绩分布: %g - %g\n", current->minScore, current->maxScore);
     for(int i = 0; i < labelCount; i++) {
         const int maxBarWidth = 150;
         int barLength = current->maxCount ? (current->intervals[i] * maxBarWidth) / current->maxCount : 0;
-        printf("%-12s", labels[i]);
+        printf("\n%-12s", labels[i]);
         for(int j = 0; j < barLength; j++) {
-            printf("■");
+            printf("█");
         }
         printf(" %d人\n", current->intervals[i]);
     }
@@ -345,8 +354,32 @@ void analyzeScoreDistribution(StuNode* sHead) {
         printf("科目：%s  |  ", getSubjectName(currentSubject));
         if(currentClass) printf("%d班", currentClass);
         else printf("年级");
-        printf("  |  总人数：%d\n", current.totalCount);
+        printf("  |  总人数：%d  |  缺考：", current.totalCount);
+        for(int i = current.absentCount; i > 0; i--) {
+            printf("🚶");
+        }
+        printf(" %d人\n", current.absentCount);
         drawBarChart(&current);
+        if(currentClass == 0) {
+            printf("\n⚠ 缺考人数分布：\n");
+            StuNode* cur = sHead->next;
+            int classAbsent[26] = {0};
+            while(cur) {
+                if(cur->student.score.total == 0) {
+                    classAbsent[cur->student.class]++;
+                }
+                cur = cur->next;
+            }
+            for(int i = 1; i <= 25; i++) {
+                if(classAbsent[i]) {
+                    printf("%2d班：", i);
+                    for(int j = classAbsent[i]; j > 0; j--) {
+                        printf("🚶");
+                    }
+                    printf(" %d人\n", classAbsent[i]);
+                }
+            }
+        }
         printf("\n操作指南：\n");
         printf("←→:切换科目 | %s | Q:退出\n", currentClass ?  "↑↓:调整班级 | G:年级视图" : "C:班级视图");
         int input = _getch();

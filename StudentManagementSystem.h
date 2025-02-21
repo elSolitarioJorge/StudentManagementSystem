@@ -50,15 +50,16 @@ typedef struct todoList {
 } TNode;
 
 typedef struct {
-    int class;
-    int subject;
-    float minScore;
-    float maxScore;
-    int intervalSize;
-    int intervalCount;
-    int intervals[20];
-    int maxCount;
-    int totalCount;
+    int class;            // 班级号（0表示年级）
+    int subject;          // 科目代码
+    float minScore;       // 最低分
+    float maxScore;       // 最高分
+    int intervalSize;     // 区间大小
+    int intervalCount;    // 区间数量
+    int intervals[20];    // 各区间人数
+    int maxCount;         // 最大区间人数
+    int totalCount;       // 总人数
+    int absentCount;      // 缺考人数
 }ScoreDistribution;
 
 void addAdmin(AccNode* aHead);
