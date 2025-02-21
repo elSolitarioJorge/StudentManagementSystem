@@ -1,4 +1,4 @@
-#include "StudentManagementSystem.h"
+#include "student_management_system.h"
 
 void writeAccountToFile(const AccNode* aHead) {
     FILE* fp = fopen("accounts.bin", "wb");

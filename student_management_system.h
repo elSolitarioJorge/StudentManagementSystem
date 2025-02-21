@@ -83,6 +83,7 @@ void userLogin(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void passwordAppeal(const AccNode* aHead, TNode* tHead);
 void inputHiddenPassword(char* inputPassword);
 char authentication(const AccNode* aHead, const char* inputUserName, const char* inputPassword);
+void showLoading();
 
 
 void studentMenu(StuNode* sHead, const char* userName, char* password);

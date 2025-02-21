@@ -15,7 +15,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/addr2line.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/addr2line.exe"
 		},
 		{
 			"name" : "CMAKE_AR",
@@ -31,7 +31,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/ar.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/ar.exe"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -155,7 +155,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/gcc.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/cc.exe"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_AR",
@@ -171,7 +171,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/gcc-ar.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/gcc-ar.exe"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_RANLIB",
@@ -187,7 +187,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/gcc-ranlib.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/gcc-ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS",
@@ -299,7 +299,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/dlltool.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/dlltool.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -531,7 +531,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/ld.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/ld.exe"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -639,7 +639,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/nm.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/nm.exe"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -667,7 +667,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/objcopy.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/objcopy.exe"
 		},
 		{
 			"name" : "CMAKE_OBJDUMP",
@@ -683,7 +683,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/objdump.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/objdump.exe"
 		},
 		{
 			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
@@ -747,7 +747,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/ranlib.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER",
@@ -763,7 +763,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/windres.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/windres.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER_WORKS",
@@ -871,7 +871,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/readelf.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/readelf.exe"
 		},
 		{
 			"name" : "CMAKE_ROOT",
@@ -1091,7 +1091,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.2/bin/mingw/bin/strip.exe"
+			"value" : "C:/Users/yaoheng/Downloads/x86_64-14.2.0-release-win32-seh-ucrt-rt_v12-rev1/mingw64/bin/strip.exe"
 		},
 		{
 			"name" : "CMAKE_TAPI",

@@ -1,4 +1,4 @@
-#include "StudentManagementSystem.h"
+#include "student_management_system.h"
 
 void teacherMenu(StuNode* sHead, char* password) {
     int choice = 0;
@@ -44,8 +44,9 @@ void displayTeacherMenu() {
     printf("3.更改学生信息\n");
     printf("4.查询学生信息\n");
     printf("5.查看所有学生信息\n");
-    printf("6.成绩分析\n");
-    printf("7.修改密码\n");
+    printf("6.查看成绩分布\n");
+    printf("7.查看成绩单\n");
+    printf("8.修改密码\n");
     printf("0.返回上一级\n");
 }
 
@@ -278,7 +279,7 @@ void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char l
     int start = ((int)minVal / intervalSize) * intervalSize;
     int end = ((int)maxVal / intervalSize + 1) * intervalSize;
     for(int i = end; i > start; i -= intervalSize) {
-        sprintf(labels[*count], "[%d-%d):", i - intervalSize, i);
+        sprintf(labels[*count], "[%d, %d):", i - intervalSize, i);
         (*count)++;
     }
 }
@@ -409,3 +410,4 @@ void analyzeScoreDistribution(StuNode* sHead) {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-#include "StudentManagementSystem.h"
+#include "student_management_system.h"
 
 int main() {
     AccNode* aHead = createAccountNode();
@@ -7,6 +7,8 @@ int main() {
     readAccountFromFile(aHead);
     readStudentFromFile(sHead);
     readTodoFromFile(tHead);
+    system("cls");
+    showLoading();
     pressAnyKeyToContinue();
     system("cls");
     mainMenu(aHead, sHead, tHead);
@@ -172,4 +174,14 @@ StuNode* copyStudentList(StuNode* head) {
         head = head->next;
     }
     return dummy.next;
+}
+
+void showLoading() {
+    const char* frames[] = {"🌑 ","🌒 ","🌓 ","🌔 ","🌕 ","🌖 ","🌗 ","🌘 "};
+    for(int i = 0; i < 8; i++) {
+        printf("\r%s 加载中...", frames[i % 8]);
+        fflush(stdout);
+        Sleep(500);
+    }
+    printf("\r✅ 加载完成!\n");
 }

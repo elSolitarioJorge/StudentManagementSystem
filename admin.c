@@ -1,4 +1,4 @@
-#include "StudentManagementSystem.h"
+#include "student_management_system.h"
 
 void adminMenu(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     int choice = 0;

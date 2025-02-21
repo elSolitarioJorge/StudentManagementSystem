@@ -1,4 +1,4 @@
-#include "StudentManagementSystem.h"
+#include "student_management_system.h"
 
 void studentMenu(StuNode* sHead, const char* userName, char* password) {
     int choice = 0;
