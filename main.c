@@ -164,7 +164,7 @@ void showLoading() {
     for(int i = 0; i < 8; i++) {
         printf("\r%s 加载中...", frames[i % 8]);
         fflush(stdout);
-        Sleep(500);
+        Sleep(250);
     }
     printf("\r✅ 加载完成! \n");
 }

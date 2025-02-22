@@ -47,7 +47,7 @@ void displayTeacherMenu() {
     printf("║       🔍 4. 查询学生            ║\n");
     printf("║       📋 5. 所有学生            ║\n");
     printf("║       📊 6. 成绩分布            ║\n");
-    printf("║       📝 7. 生成成绩            ║\n");
+    printf("║       📝 7. 各科排名            ║\n");
     printf("║       🔐 8. 修改密码            ║\n");
     printf("║       ↩️ 0. 返回                ║\n");
     printf("╚═════════════════════════════════╝\n");
@@ -223,45 +223,77 @@ float compareStudents(const StuNode* s1, const StuNode* s2, int criteria) {
 
 StuNode* mergeStudentByCriteria(StuNode* head1, StuNode* head2, int criteria) {
     StuNode dummy;
+    dummy.prev = NULL;
     dummy.next = NULL;
     StuNode* tail = &dummy;
     while(head1 && head2) {
-        if(compareStudents(head1, head2, criteria) >= 0) {
+        if(compareStudents(head1, head2, criteria) > 0) {
             tail->next = head1;
+            head1->prev = tail;
             head1 = head1->next;
         } else {
             tail->next = head2;
+            head2->prev = tail;
             head2 = head2->next;
         }
         tail = tail->next;
     }
-    tail->next = head1 ? head1 : head2;
+    StuNode* remaining = head1 ? head1 : head2;
+    if(remaining) {
+        tail->next = remaining;
+        remaining->prev = tail;
+    }
+    if(dummy.next) {
+        dummy.next->prev = NULL;
+    }
     return dummy.next;
 }
 
-StuNode* splitStudent(StuNode* head) {
-    if(head == NULL || head->next == NULL) {
+StuNode* splitStudent(StuNode* start, int n) {
+    if(start == NULL || start->next == NULL) {
         return NULL;
     }
-    StuNode* fast = head->next;
-    StuNode* slow = head;
-    while(fast && fast->next) {
-        fast = fast->next->next;
-        slow = slow->next;
+    for(int i = 1; i < n && start->next; i++) {
+        start = start->next;
     }
-    StuNode* secondHalf = slow->next;
-    slow->next = NULL;
-    return secondHalf;
+    StuNode* next = start->next;
+    if(next) {
+        next->prev = NULL;
+    }
+    start->next = NULL;
+    return next;
 }
 
 StuNode*  mergeSortStudentByCriteria(StuNode* head, int criteria) {
     if(head == NULL || head->next == NULL) {
         return head;
     }
-    StuNode* secondHalf = splitStudent(head);
-    head = mergeSortStudentByCriteria(head, criteria);
-    secondHalf = mergeSortStudentByCriteria(secondHalf, criteria);
-    return mergeStudentByCriteria(head, secondHalf, criteria);
+    int listSize = 0;
+    StuNode* curr = head;
+    while(curr) {
+        listSize++;
+        curr = curr->next;
+    }
+    for(int blockSize = 1; blockSize < listSize; blockSize *= 2) {
+        StuNode* dummyHead = (StuNode*)malloc(sizeof(StuNode));
+        dummyHead->prev = NULL;
+        dummyHead->next = head;
+        StuNode* tail = dummyHead;
+        while(head) {
+            StuNode* left = head;
+            StuNode* right = splitStudent(left, blockSize);
+            head = splitStudent(right, blockSize);
+            StuNode* merged = mergeStudentByCriteria(left, right, criteria);
+            tail->next = merged;
+            merged->prev = tail;
+            while(tail->next) {
+                tail = tail->next;
+            }
+        }
+        head = dummyHead->next;
+        free(dummyHead);
+    }
+    return head;
 }
 
 int getFullScoreBySubject(int subject) {
@@ -326,7 +358,7 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) 
     while(cur) {
         if((class == 0 || cur->student.class == class) && cur->student.score.total > 0) {
             float score = getScoreBySubject(cur, subject);
-            int index = (intervalEnd - (int)score) / current.intervalSize;
+            int index = (intervalEnd - (int)score - 1) / current.intervalSize;
             index = index >= current.intervalCount ? current.intervalCount - 1 : index;
             current.intervals[index]++;
             current.maxCount = current.maxCount > current.intervals[index] ? current.maxCount : current.intervals[index];

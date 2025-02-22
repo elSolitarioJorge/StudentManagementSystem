@@ -113,7 +113,7 @@ void pagePrintingStudent(const StuNode* sHead, int pageSize);
 float compareStudents(const StuNode* s2, const StuNode* s1, int criteria);
 void analyzeScoreDistribution(StuNode* sHead);
 StuNode* mergeStudentByCriteria(StuNode* head1, StuNode* head2, int criteria);
-StuNode* splitStudent(StuNode* head);
+StuNode* splitStudent(StuNode* start, int n);
 StuNode* mergeSortStudentByCriteria(StuNode* head, int criteria);
 int getFullScoreBySubject(int subject);
 int getIntervalSize(int subject);
