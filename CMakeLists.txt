@@ -3,9 +3,7 @@ project(StudentManagementSystem C)
 
 set(CMAKE_C_STANDARD 11)
 
-# 设置工程需要的头文件路径
 set(INC_DIR ./include)
-# 设置工程需要的库文件路径，这就是我存放dll文件的位置
 set(LINK_DIR ./dll)
 include_directories(${INC_DIR})
 link_directories(${LINK_DIR})

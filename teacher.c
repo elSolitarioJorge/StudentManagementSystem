@@ -38,16 +38,19 @@ void teacherMenu(AccNode* myAccount, StuNode* sHead) {
 }
 
 void displayTeacherMenu() {
-    printf("欢迎教师登录!\n");
-    printf("1.添加学生信息\n");
-    printf("2.删除学生信息\n");
-    printf("3.更改学生信息\n");
-    printf("4.查询学生信息\n");
-    printf("5.查看所有学生信息\n");
-    printf("6.查看成绩分布\n");
-    printf("7.查看成绩单\n");
-    printf("8.修改密码\n");
-    printf("0.返回上一级\n");
+    printf("╔═════════════════════════════════╗\n");
+    printf("║      👨🏫 教师控制台 👩🏫       ║\n");
+    printf("╟─────────────────────────────────╢\n");
+    printf("║       🆕 1. 添加学生            ║\n");
+    printf("║       🗑️ 2. 删除学生            ║\n");
+    printf("║       ✏️ 3. 修改信息            ║\n");
+    printf("║       🔍 4. 查询学生            ║\n");
+    printf("║       📋 5. 所有学生            ║\n");
+    printf("║       📊 6. 成绩分布            ║\n");
+    printf("║       📝 7. 生成成绩            ║\n");
+    printf("║       🔐 8. 修改密码            ║\n");
+    printf("║       ↩️ 0. 返回                ║\n");
+    printf("╚═════════════════════════════════╝\n");
 }
 
 void enterScore(StuNode* student) {
@@ -108,12 +111,14 @@ void deleteStudent(StuNode* sHead) {
 void changeStudent(StuNode* sHead) {
     StuNode* stu = findStudent(sHead);
     if(stu != NULL) {
+        Student student = stu->student;
         printf("---修改学生信息---\n");
         getStringInput("学号：", stu->student.id, sizeof(stu->student.id));
         getStringInput("姓名：", stu->student.name, sizeof(stu->student.name));
         printf("班级：");
         stu->student.class = getValidInput(1, 25);
         if(stu->student.class == -1) {
+            stu->student = student;
             printf("输入不合法（直接输入学生所在班级的数字即可），修改失败！\n");
             pressAnyKeyToContinue();
             return;

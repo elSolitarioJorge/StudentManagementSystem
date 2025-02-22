@@ -29,7 +29,7 @@ void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead)
                 pressAnyKeyToContinue();
                 break;
             case '5':
-                pagePrintingAccount(aHead, 12);
+                pagePrintingAccount(aHead, 20);
                 break;
             case '6':
                 printTodo(tHead, count);
@@ -47,16 +47,19 @@ void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead)
 }
 
 void displayAdminMenu(int count) {
-    printf("欢迎管理员登录！\n");
-    printf("1.添加账户信息\n");
-    printf("2.删除账户信息\n");
-    printf("3.更改账户信息\n");
-    printf("4.查找账户信息\n");
-    printf("5.查看所有账户信息\n");
-    printf("6.查看代办(%d)\n", count);
-    printf("7.完成代办\n");
-    printf("8.登录教师端\n");
-    printf("0.返回上一级\n");
+    printf("╔════════════════════════════════╗\n");
+    printf("║       👑 管理员控制台 👑       ║\n");
+    printf("╟────────────────────────────────╢\n");
+    printf("║       ➕ 1. 添加账户           ║\n");
+    printf("║       ✖️ 2. 删除账户           ║\n");
+    printf("║       ✏️ 3. 修改账户           ║\n");
+    printf("║       🔍 4. 查找账户           ║\n");
+    printf("║       📜 5. 所有账户           ║\n");
+    printf("║       📨 6. 待办事项(%d)        ║\n", count);
+    printf("║       ✅ 7. 完成待办           ║\n");
+    printf("║       👨 8. 教师模式           ║\n");
+    printf("║       ↩️ 0. 返回               ║\n");
+    printf("╚════════════════════════════════╝\n");
 }
 
 void addAccount(AccNode* aHead) {
@@ -108,11 +111,11 @@ void changeAccount(AccNode* aHead) {
 
 AccNode* findPrevAccount(AccNode* aHead) {
     system("cls");
-    char userName[20];
+    char str[50];
     AccNode* prev = aHead;
-    getStringInput("请输入用户名（账号）：", userName, sizeof(userName));
+    getStringInput("请输入用账号或姓名：", str, sizeof(str));
     while(prev->next != NULL) {
-        if(strcmp(prev->next->account.userName, userName) == 0) {
+        if(strcmp(prev->next->account.userName, str) == 0 || strcmp(prev->next->account.name, str) == 0) {
             printf("该用户信息如下：\n");
             printf("用户名：%s\n", prev->next->account.userName);
             printf("姓名：  %s\n", prev->next->account.name);
@@ -154,7 +157,7 @@ void pagePrintingAccount(const AccNode* aHead, int pageSize) {
         int count = 0;
         AccNode* temp = cur;
         while(temp && count < pageSize) {
-            printf("%-16s%-16s", temp->account.userName, temp->account.name);
+            printf("%-16s%s\t\t", temp->account.userName, temp->account.name);
             if(temp->account.role == 'S') {
                 printf("学生\n");
             } else if(temp->account.role == 'T') {
@@ -194,6 +197,11 @@ void pagePrintingAccount(const AccNode* aHead, int pageSize) {
 void printTodo(const TNode* tHead, int count) {
     system("cls");
     TNode* cur = tHead->next;
+    if(count == 0) {
+        printf("勤劳的管理员，所有代办都已处理完成，您可以尽情地去玩原神啦!\n");
+        pressAnyKeyToContinue();
+        return;
+    }
     printf("有%d个密码申诉代办，请尽快处理！\n", count);
     while(cur) {
         printf("用户名：%s\n", cur->userName);
@@ -204,6 +212,11 @@ void printTodo(const TNode* tHead, int count) {
 
 void finishTodo(const AccNode* aHead, TNode* tHead, int* count) {
     system("cls");
+    if(*count == 0) {
+        printf("没有待处理的申诉!\n");
+        pressAnyKeyToContinue();
+        return;
+    }
     while(tHead->next) {
         AccNode* acc = aHead->next;
         while(acc) {
@@ -222,6 +235,7 @@ void finishTodo(const AccNode* aHead, TNode* tHead, int* count) {
     }
     writeAccountToFile(aHead);
     writeTodoToFile(tHead);
+    system("cls");
     printf("已将所有申诉账号密码重置完成！（学生初始密码为学号后六位，其他账号初始密码为\"111111\"）\n");
     pressAnyKeyToContinue();
 }

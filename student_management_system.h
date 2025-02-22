@@ -68,7 +68,6 @@ typedef struct {
     int absentCount;      // 缺考人数
 }ScoreDistribution;
 
-void addAdmin(AccNode* aHead);
 void pressAnyKeyToContinue();
 void clearInputBuffer();
 int getValidInput(int min, int max);

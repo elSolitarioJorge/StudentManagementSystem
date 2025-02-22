@@ -17,22 +17,6 @@ int main() {
     return 0;
 }
 
-void addAdmin(AccNode* aHead) {
-    AccNode* admin = (AccNode*)malloc(sizeof(AccNode));
-    if(admin == NULL) {
-        perror("Error allocating memory");
-        pressAnyKeyToContinue();
-        return;
-    }
-    admin->next = aHead->next;
-    aHead->next = admin;
-    strcpy(admin->account.userName, "admin");
-    admin->account.role = 'A';
-    writeAccountToFile(aHead);
-    printf("管理员账号添加成功！\n");
-    pressAnyKeyToContinue();
-}
-
 void pressAnyKeyToContinue() {
     printf("请按任意键继续...\n");
     _getch();
@@ -182,5 +166,5 @@ void showLoading() {
         fflush(stdout);
         Sleep(500);
     }
-    printf("\r✅ 加载完成!\n");
+    printf("\r✅ 加载完成! \n");
 }
