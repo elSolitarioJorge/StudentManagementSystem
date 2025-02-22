@@ -27,7 +27,6 @@ void addAdmin(AccNode* aHead) {
     admin->next = aHead->next;
     aHead->next = admin;
     strcpy(admin->account.userName, "admin");
-    strcpy(admin->account.password, "111111");
     admin->account.role = 'A';
     writeAccountToFile(aHead);
     printf("管理员账号添加成功！\n");

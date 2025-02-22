@@ -1,6 +1,6 @@
 #include "student_management_system.h"
 
-void adminMenu(AccNode* aHead, StuNode* sHead, TNode* tHead) {
+void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead) {
     int choice = 0;
     int count = 0;
     TNode* temp = tHead->next;
@@ -38,7 +38,7 @@ void adminMenu(AccNode* aHead, StuNode* sHead, TNode* tHead) {
                 finishTodo(aHead, tHead, &count);
                 break;
             case '8':
-                teacherMenu(sHead, "");
+                teacherMenu(myAccount, sHead);
                 break;
             default :
                 break;
@@ -66,18 +66,11 @@ void addAccount(AccNode* aHead) {
     printf("请选择账户身份（S：学生  T：教师  A：管理员）：");
     newAccount->account.role = selectIdentify();
     getStringInput("请输入用户名(账号）：", newAccount->account.userName, sizeof(newAccount->account.userName));
-    if(newAccount->account.role == 'S') {
-        strcpy(newAccount->account.password, newAccount->account.userName + strlen(newAccount->account.userName) - 6);
-    } else {
-        strcpy(newAccount->account.password, "111111");
-    }
+    getStringInput("姓名：", newAccount->account.name, sizeof(newAccount->account.name));
+    initAccount(newAccount);
     appendAccountNodeAtTail(aHead, newAccount);
     writeAccountToFile(aHead);
     printf("---账户添加成功---\n");
-    printf("新账户信息：\n");
-    printf("用户名：%s\n", newAccount->account.userName);
-    printf("密码：  %s\n", newAccount->account.password);
-    printf("身份：  %c\n", newAccount->account.role);
     pressAnyKeyToContinue();
 }
 
@@ -104,8 +97,9 @@ void deleteAccount(AccNode* aHead) {
 void changeAccount(AccNode* aHead) {
     AccNode* cur = findPrevAccount(aHead)->next;
     if(cur) {
-        getStringInput("设置新密码：", cur->account.password, sizeof(cur->account.password));
-        printf("设置新身份（S/T/A）：");
+        getStringInput("设置用户名：", cur->account.userName, sizeof(cur->account.userName));
+        getStringInput("设置姓名：  ", cur->account.name, sizeof(cur->account.name));
+        printf("设置身份（S/T/A）：");
         cur->account.role = selectIdentify();
         printf("更改成功！\n");
     }
@@ -121,7 +115,7 @@ AccNode* findPrevAccount(AccNode* aHead) {
         if(strcmp(prev->next->account.userName, userName) == 0) {
             printf("该用户信息如下：\n");
             printf("用户名：%s\n", prev->next->account.userName);
-            printf("密码：  %s\n", prev->next->account.password);
+            printf("姓名：  %s\n", prev->next->account.name);
             switch(prev->next->account.role) {
                 case 'A':
                     printf("身份：  管理员\n");
@@ -155,20 +149,19 @@ void pagePrintingAccount(const AccNode* aHead, int pageSize) {
     cur = aHead->next;
     while(1) {
         system("cls");
-        printf("---用户账密信息---\n\n");
-        printf("账号\t\t用户身份\t密码\n");
+        printf("---用户信息---\n\n");
+        printf("账号\t\t姓名\t\t用户身份\n");
         int count = 0;
         AccNode* temp = cur;
         while(temp && count < pageSize) {
-            printf("%-16s", temp->account.userName);
+            printf("%-16s%-16s", temp->account.userName, temp->account.name);
             if(temp->account.role == 'S') {
-                printf("学生\t\t");
+                printf("学生\n");
             } else if(temp->account.role == 'T') {
-                printf("教师\t\t");
+                printf("教师\n");
             } else if(temp->account.role == 'A') {
-                printf("管理员\t\t");
+                printf("管理员\n");
             }
-            printf("%s\n", temp->account.password);
             temp = temp->next;
             count++;
         }
@@ -215,11 +208,9 @@ void finishTodo(const AccNode* aHead, TNode* tHead, int* count) {
         AccNode* acc = aHead->next;
         while(acc) {
             if(strcmp(acc->account.userName, tHead->next->userName) == 0) {
-                if(acc->account.role == 'S') {
-                    strcpy(acc->account.password, acc->account.userName + strlen(acc->account.userName) - 6);
-                } else {
-                    strcpy(acc->account.password, "111111");
-                }
+                RAND_bytes(acc->account.salt, SALT_LENGTH);
+                const char* newPass = acc->account.role == 'S' ? acc->account.userName + strlen(acc->account.userName) - 6 : "111111";
+                hashPassword(newPass, acc->account.salt, acc->account.passwordHash);
                 TNode* del = tHead->next;
                 tHead->next = del->next;
                 free(del);
@@ -258,4 +249,21 @@ char selectIdentify() {
     }
 }
 
+void hashPassword(const char* password, const unsigned char* salt, unsigned char* outputHash) {
+    unsigned char saltedPass[SALT_LENGTH + MAX_PASSWORD_LENGTH];
+    // 生成盐值+密码组合
+    memcpy(saltedPass, salt, SALT_LENGTH);
+    memcpy(saltedPass + SALT_LENGTH, password, strlen(password));
+    // SHA256哈希计算
+    SHA256(saltedPass, SALT_LENGTH + strlen(password), outputHash);
+}
+
+void initAccount(AccNode* acc) {
+    if(!RAND_bytes(acc->account.salt, SALT_LENGTH)) {
+        fprintf(stderr, "盐值生成失败\n");
+        exit(EXIT_FAILURE);
+    }
+    const char* initPass = acc->account.role == 'S' ? acc->account.userName + strlen(acc->account.userName) - 6 : "111111";
+    hashPassword(initPass, acc->account.salt, acc->account.passwordHash);
+}
 

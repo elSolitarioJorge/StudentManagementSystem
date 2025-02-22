@@ -3,9 +3,12 @@ project(StudentManagementSystem C)
 
 set(CMAKE_C_STANDARD 11)
 
-set(OPENSSL_ROOT_DIR "C:\\Program Files\\OpenSSL-Win64")
-include_directories(${OPENSSL_ROOT_DIR}/include)
-link_directories(${OPENSSL_ROOT_DIR}/lib)
+# 设置工程需要的头文件路径
+set(INC_DIR ./include)
+# 设置工程需要的库文件路径，这就是我存放dll文件的位置
+set(LINK_DIR ./dll)
+include_directories(${INC_DIR})
+link_directories(${LINK_DIR})
 
 add_executable(StudentManagementSystem main.c
         student_management_system.h
@@ -16,7 +19,4 @@ add_executable(StudentManagementSystem main.c
         admin.c
 )
 
-target_link_libraries(StudentManagementSystem PRIVATE
-        libssl.lib
-        libcrypto.lib
-)
+target_link_libraries(StudentManagementSystem libcrypto.dll)

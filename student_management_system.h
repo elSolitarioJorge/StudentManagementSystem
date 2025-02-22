@@ -6,8 +6,12 @@
 #include <string.h>
 #include <conio.h>
 #include <windows.h>
+#include <openssl/sha.h>
+#include <openssl/rand.h>
 
 #define MAX_PASSWORD_LENGTH 50
+#define SALT_LENGTH 32
+#define HASH_LENGTH SHA256_DIGEST_LENGTH
 
 typedef struct {
     float chinese;
@@ -21,9 +25,11 @@ typedef struct {
 } Score;
 
 typedef struct {
-    char userName[20];
-    char password[MAX_PASSWORD_LENGTH + 1];
-    char role;
+    char name[50];
+    char userName[20]; // 用户名（账号）
+    unsigned char passwordHash[HASH_LENGTH]; // 存储哈希值
+    unsigned char salt[SALT_LENGTH];         // 存储盐值
+    char role;        // 角色（'A'表示管理员，‘T’代表教师， 'S'表示学生）
 } Account;
 
 typedef struct {
@@ -77,26 +83,27 @@ void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode);
 void freeAccountList(AccNode* aHead);
 void freeStudentList(StuNode* sHead);
 StuNode* copyStudentList(StuNode* head);
+
 void mainMenu(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayMainMenu();
 void userLogin(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void passwordAppeal(const AccNode* aHead, TNode* tHead);
 void inputHiddenPassword(char* inputPassword);
-char authentication(const AccNode* aHead, const char* inputUserName, const char* inputPassword);
+AccNode* authentication(const AccNode* aHead, const char *inputUserName, const char *inputPassword);
 void showLoading();
 
 
-void studentMenu(StuNode* sHead, const char* userName, char* password);
+void studentMenu(AccNode* myAccount, StuNode* sHead);
 void displayStudentMenu();
 void queryResults(const StuNode* myself);
 void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class);
-void changePassword(char* oldPassword);
+void changePassword(AccNode* acc);
 char* setPassword(char* password1, char* password2);
 void scoreAnalysis(StuNode* sHead, StuNode* myself);
 float getScoreBySubject(StuNode* node, int subject);
 const char* getSubjectName(int subject);
 
-void teacherMenu(StuNode* sHead, char* password);
+void teacherMenu(AccNode* myAccount, StuNode* sHead);
 void displayTeacherMenu();
 void enterScore(StuNode* student);
 void addStudent(StuNode* sHead);
@@ -116,7 +123,7 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject);
 void drawBarChart(const ScoreDistribution* current);
 
 
-void adminMenu(AccNode* aHead, StuNode* sHead, TNode* tHead);
+void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayAdminMenu(int count);
 void addAccount(AccNode* aHead);
 void deleteAccount(AccNode* aHead);
@@ -126,6 +133,8 @@ void pagePrintingAccount(const AccNode* aHead, int pageSize);
 void printTodo(const TNode* tHead, int count);
 void finishTodo(const AccNode* aHead, TNode* tHead, int* count);
 char selectIdentify();
+void hashPassword(const char* password, const unsigned char* salt, unsigned char* outputHash);
+void initAccount(AccNode* acc);
 
 void writeAccountToFile(const AccNode* aHead);
 void writeStudentToFile(const StuNode* sHead);

@@ -1,10 +1,10 @@
 #include "student_management_system.h"
 
-void studentMenu(StuNode* sHead, const char* userName, char* password) {
+void studentMenu(AccNode* myAccount, StuNode* sHead) {
     int choice = 0;
     StuNode* myself = sHead->next;
     while(myself != NULL) {
-        if(strcmp(myself->student.id, userName) == 0) {
+        if(strcmp(myself->student.id, myAccount->account.userName) == 0) {
             break;
         }
         myself = myself->next;
@@ -32,7 +32,7 @@ void studentMenu(StuNode* sHead, const char* userName, char* password) {
                 scoreAnalysis(sHead, myself);
                 break;
             case '4':
-                changePassword(password);
+                changePassword(myAccount);
                 break;
             default:
                 break;
@@ -124,20 +124,24 @@ void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class) 
     }
 }
 
-void changePassword(char* oldPassword) {
+void changePassword(AccNode* acc) {
     system("cls");
     char inputPassword[MAX_PASSWORD_LENGTH + 1];
     printf("---修改密码---\n");
     printf("请输入原密码：");
     inputHiddenPassword(inputPassword);
-    if(strcmp(inputPassword, oldPassword) == 0) {
-        char password2[MAX_PASSWORD_LENGTH + 1];
-        char password1[MAX_PASSWORD_LENGTH + 1];
-        strcpy(oldPassword, setPassword(password1, password2));
-        printf("密码修改成功！\n");
-    } else {
-        printf("密码错误，请重试\n");
+    unsigned char inputHash[HASH_LENGTH];
+    hashPassword(inputPassword, acc->account.salt, inputHash);
+    if(memcmp(inputHash, acc->account.passwordHash, HASH_LENGTH) != 0) {
+        printf("密码错误！\n");
+        pressAnyKeyToContinue();
+        return;
     }
+    char newPass1[MAX_PASSWORD_LENGTH + 1], newPass2[MAX_PASSWORD_LENGTH + 1];
+    setPassword(newPass1, newPass2);
+    RAND_bytes(acc->account.salt, SALT_LENGTH);
+    hashPassword(newPass1, acc->account.salt, acc->account.passwordHash);
+    printf("密码修改成功！\n");
     pressAnyKeyToContinue();
 }
 

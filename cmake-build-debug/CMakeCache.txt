@@ -213,6 +213,15 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Path to a library.
+LIB_EAY:FILEPATH=LIB_EAY-NOTFOUND
+
+//Path to a file.
+OPENSSL_INCLUDE_DIR:PATH=C:/Program Files/OpenSSL-Win64/include
+
+//Path to a library.
+SSL_EAY:FILEPATH=SSL_EAY-NOTFOUND
+
 //Value Computed by CMake
 StudentManagementSystem_BINARY_DIR:STATIC=C:/code/Clion_code/StudentManagementSystem/cmake-build-debug
 
@@ -363,6 +372,10 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_TAPI-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: LIB_EAY
+LIB_EAY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SSL_EAY
+SSL_EAY-ADVANCED:INTERNAL=1
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 

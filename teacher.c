@@ -1,6 +1,6 @@
 #include "student_management_system.h"
 
-void teacherMenu(StuNode* sHead, char* password) {
+void teacherMenu(AccNode* myAccount, StuNode* sHead) {
     int choice = 0;
     while(1) {
         system("cls");
@@ -29,7 +29,7 @@ void teacherMenu(StuNode* sHead, char* password) {
                 analyzeScoreDistribution(sHead);
                 break;
             case '7':
-                changePassword(password);
+                changePassword(myAccount);
                 break;
             default :
                 break;

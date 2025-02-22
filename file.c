@@ -125,7 +125,10 @@ void importAccountToFile(const char* csvFileName, const char* binFileName) {
     fgets(line, sizeof(line), csv); //跳过第一行标题
     while(fgets(line, sizeof(line), csv)) {
         Account account;
-        sscanf(line, "%[^,],%[^,],%c", account.userName, account.password, &account.role);
+        sscanf(line, "%[^,],%[^,],%c", account.userName, account.name, &account.role);
+        const char* initPass = account.role == 'S' ? account.userName + strlen(account.userName) - 6 : "111111";
+        RAND_bytes(account.salt, SALT_LENGTH);
+        hashPassword(initPass, account.salt, account.passwordHash);
         fwrite(&account, sizeof(Account), 1, bin);
     }
     fclose(csv);

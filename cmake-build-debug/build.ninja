@@ -52,42 +52,42 @@ build cmake_object_order_depends_target_StudentManagementSystem: phony || .
 build CMakeFiles/StudentManagementSystem.dir/main.c.obj: C_COMPILER__StudentManagementSystem_unscanned_Debug C$:/code/Clion_code/StudentManagementSystem/main.c || cmake_object_order_depends_target_StudentManagementSystem
   DEP_FILE = CMakeFiles\StudentManagementSystem.dir\main.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/OpenSSL-Win64/include"
+  INCLUDES = -IC:/code/Clion_code/StudentManagementSystem/./include
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   OBJECT_FILE_DIR = CMakeFiles\StudentManagementSystem.dir
 
 build CMakeFiles/StudentManagementSystem.dir/login.c.obj: C_COMPILER__StudentManagementSystem_unscanned_Debug C$:/code/Clion_code/StudentManagementSystem/login.c || cmake_object_order_depends_target_StudentManagementSystem
   DEP_FILE = CMakeFiles\StudentManagementSystem.dir\login.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/OpenSSL-Win64/include"
+  INCLUDES = -IC:/code/Clion_code/StudentManagementSystem/./include
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   OBJECT_FILE_DIR = CMakeFiles\StudentManagementSystem.dir
 
 build CMakeFiles/StudentManagementSystem.dir/student.c.obj: C_COMPILER__StudentManagementSystem_unscanned_Debug C$:/code/Clion_code/StudentManagementSystem/student.c || cmake_object_order_depends_target_StudentManagementSystem
   DEP_FILE = CMakeFiles\StudentManagementSystem.dir\student.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/OpenSSL-Win64/include"
+  INCLUDES = -IC:/code/Clion_code/StudentManagementSystem/./include
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   OBJECT_FILE_DIR = CMakeFiles\StudentManagementSystem.dir
 
 build CMakeFiles/StudentManagementSystem.dir/teacher.c.obj: C_COMPILER__StudentManagementSystem_unscanned_Debug C$:/code/Clion_code/StudentManagementSystem/teacher.c || cmake_object_order_depends_target_StudentManagementSystem
   DEP_FILE = CMakeFiles\StudentManagementSystem.dir\teacher.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/OpenSSL-Win64/include"
+  INCLUDES = -IC:/code/Clion_code/StudentManagementSystem/./include
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   OBJECT_FILE_DIR = CMakeFiles\StudentManagementSystem.dir
 
 build CMakeFiles/StudentManagementSystem.dir/file.c.obj: C_COMPILER__StudentManagementSystem_unscanned_Debug C$:/code/Clion_code/StudentManagementSystem/file.c || cmake_object_order_depends_target_StudentManagementSystem
   DEP_FILE = CMakeFiles\StudentManagementSystem.dir\file.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/OpenSSL-Win64/include"
+  INCLUDES = -IC:/code/Clion_code/StudentManagementSystem/./include
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   OBJECT_FILE_DIR = CMakeFiles\StudentManagementSystem.dir
 
 build CMakeFiles/StudentManagementSystem.dir/admin.c.obj: C_COMPILER__StudentManagementSystem_unscanned_Debug C$:/code/Clion_code/StudentManagementSystem/admin.c || cmake_object_order_depends_target_StudentManagementSystem
   DEP_FILE = CMakeFiles\StudentManagementSystem.dir\admin.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/OpenSSL-Win64/include"
+  INCLUDES = -IC:/code/Clion_code/StudentManagementSystem/./include
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   OBJECT_FILE_DIR = CMakeFiles\StudentManagementSystem.dir
 
@@ -101,8 +101,8 @@ build CMakeFiles/StudentManagementSystem.dir/admin.c.obj: C_COMPILER__StudentMan
 
 build StudentManagementSystem.exe: C_EXECUTABLE_LINKER__StudentManagementSystem_Debug CMakeFiles/StudentManagementSystem.dir/main.c.obj CMakeFiles/StudentManagementSystem.dir/login.c.obj CMakeFiles/StudentManagementSystem.dir/student.c.obj CMakeFiles/StudentManagementSystem.dir/teacher.c.obj CMakeFiles/StudentManagementSystem.dir/file.c.obj CMakeFiles/StudentManagementSystem.dir/admin.c.obj
   FLAGS = -g
-  LINK_LIBRARIES = -lssl  -lcrypto  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  LINK_PATH = -LC:/PROGRA~1/OPENSS~1/lib
+  LINK_LIBRARIES = -lcrypto  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_PATH = -LC:/code/Clion_code/StudentManagementSystem/./dll
   OBJECT_DIR = CMakeFiles\StudentManagementSystem.dir
   POST_BUILD = cd .
   PRE_LINK = cd .

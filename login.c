@@ -38,20 +38,23 @@ void userLogin(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     getStringInput("请输入用户名（账号）：", inputUserName, sizeof(inputUserName));
     printf("请输入密码：");
     inputHiddenPassword(inputPassword);
-    char role = authentication(aHead, inputUserName, inputPassword);
-    switch(role) {
+    AccNode* acc = authentication(aHead, inputUserName, inputPassword);
+    if(acc == NULL) {
+        printf("用户名或密码错误，请重试\n");
+        pressAnyKeyToContinue();
+        return;
+    }
+    switch(acc->account.role) {
         case 'S':
-            studentMenu(sHead, inputUserName, inputPassword);
+            studentMenu(acc, sHead);
             break;
         case 'T':
-            teacherMenu(sHead, inputPassword);
+            teacherMenu(acc, sHead);
             break;
         case 'A':
-            adminMenu(aHead, sHead, tHead);
+            adminMenu(acc, aHead, sHead, tHead);
             break;
         default:
-            printf("用户名或密码错误，请重试\n");
-            pressAnyKeyToContinue();
             break;
     }
 }
@@ -97,13 +100,17 @@ void inputHiddenPassword(char* inputPassword) {
     inputPassword[i] = '\0';
 }
 
-char authentication(const AccNode* aHead, const char* inputUserName, const char* inputPassword) {
+AccNode* authentication(const AccNode *aHead, const char *inputUserName, const char *inputPassword) {
     AccNode* cur = aHead->next;
     while(cur != NULL) {
-        if(strcmp(cur->account.userName, inputUserName) == 0 && strcmp(cur->account.password, inputPassword) == 0) {
-            return cur->account.role;
+        if(strcmp(cur->account.userName, inputUserName) == 0) {
+            unsigned char inputHash[HASH_LENGTH];
+            hashPassword(inputPassword, cur->account.salt, inputHash);
+            if(memcmp(inputHash, cur->account.passwordHash, HASH_LENGTH) == 0) {
+                return cur;
+            }
         }
         cur = cur->next;
     }
-    return -1;
+    return NULL;
 }
