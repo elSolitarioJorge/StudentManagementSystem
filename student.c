@@ -23,10 +23,10 @@ void studentMenu(AccNode* myAccount, StuNode* sHead) {
             case '0':
                 return;
             case '1':
-                queryResults(myself);
+                queryMyScore(myself);
                 break;
             case '2':
-                pagePrintingOneClassStudent(sHead, 10, myself->student.class);
+                pagePrintingOneClassStudentBySubject(sHead, 10, myself->student.class);
                 break;
             case '3':
                 scoreAnalysis(sHead, myself);
@@ -52,7 +52,7 @@ void displayStudentMenu() {
     printf("╚════════════════════════════════╝\n");
 }
 
-void queryResults(const StuNode* myself) {
+void queryMyScore(const StuNode* myself) {
     system("cls");
     printf("学号：\t%s\n", myself->student.id);
     printf("姓名：\t%s\n", myself->student.name);
@@ -68,16 +68,21 @@ void queryResults(const StuNode* myself) {
     pressAnyKeyToContinue();
 }
 
-void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class) {
-    StuNode* cur = sHead->next;
+void pagePrintingOneClassStudentBySubject(const StuNode* sHead, int pageSize, int class) {
+    StuNode* classHead = copyStudentByClass(sHead, class);
+    if(classHead == NULL) {
+        printf("班级为空！\n");
+        pressAnyKeyToContinue();
+        return;
+    }
+    classHead = mergeSortStudentByCriteria(classHead, 0);
+    StuNode* cur = classHead;
     int size = 0;
     while(cur != NULL) {
-        if(cur->student.class == class) {
-            size++;
-        }
+        size++;
         cur = cur->next;
     }
-    cur = sHead->next;
+    cur = classHead;
     int totalPages = (size + pageSize - 1) / pageSize;
     int currentPage = totalPages ? 1 : 0;
     while(1) {
@@ -87,12 +92,10 @@ void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class) 
         int count = 0;
         StuNode* temp = cur;
         while(temp && count < pageSize) {
-            if(temp->student.class == class) {
-                printf("%-16s%s\t%-8d%-8g%-8g%-8g%-8g%-8g%-8g%-8g%g\n",temp->student.id, temp->student.name, temp->student.class,
-                    temp->student.score.chinese, temp->student.score.math, temp->student.score.english, temp->student.score.lizong,
-                    temp->student.score.physics, temp->student.score.chemistry, temp->student.score.biology, temp->student.score.total);
-                count++;
-            }
+            printf("%-16s%s\t%-8d%-8g%-8g%-8g%-8g%-8g%-8g%-8g%g\n",temp->student.id, temp->student.name, temp->student.class,
+                temp->student.score.chinese, temp->student.score.math, temp->student.score.english, temp->student.score.lizong,
+                temp->student.score.physics, temp->student.score.chemistry, temp->student.score.biology, temp->student.score.total);
+            count++;
             temp = temp->next;
         }
         printf("\n\n\t\t\t\t--------Page(%d/%d)--------\n\n", currentPage, totalPages);
@@ -123,6 +126,7 @@ void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class) 
             }
             currentPage--;
         } else if(command == 'Q' || command == 'q') {
+            freeStudentList(classHead);
             break;
         }
     }

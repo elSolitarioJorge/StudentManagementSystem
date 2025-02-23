@@ -28,7 +28,10 @@ void teacherMenu(AccNode* myAccount, StuNode* sHead) {
             case '6':
                 analyzeScoreDistribution(sHead);
                 break;
-            case '7':
+            case'7':
+                analyzeScoreRanking(sHead);
+                break;
+            case '8':
                 changePassword(myAccount);
                 break;
             default :
@@ -448,3 +451,60 @@ void analyzeScoreDistribution(StuNode* sHead) {
     }
 }
 
+void analyzeScoreRanking(const StuNode* sHead) {
+    int currentClass = 0, currentSubject = 0;
+    while(1) {
+        system("cls");
+        printf("科目：%s  |  ", getSubjectName(currentSubject));
+        if(currentClass) printf("%d班\n\n", currentClass);
+        else printf("年级\n\n");
+        printf("←→:切换科目 | %s\n\n", currentClass ?  "↑↓:调整班级 | G:年级视图" : "C:班级视图");
+        printTranscript(sHead, currentClass, currentSubject);
+        int input = _getch();
+        switch(input) {
+            case 75:
+                currentSubject = (currentSubject - 1 + 8) % 8;
+            break;
+            case 77:
+                currentSubject = (currentSubject + 1) % 8;
+            break;
+            case 'C':case'c':
+                currentClass = 1;
+            break;
+            case 72:
+                if(currentClass > 0 && currentClass < 25) currentClass++;
+            break;
+            case 80:
+                if(currentClass > 1) currentClass--;
+            break;
+            case 'G':case'g':
+                currentClass = 0;
+            break;
+            case 'Q':case'q':
+                return;
+            default:
+                break;
+        }
+    }
+}
+
+void printTranscript(const StuNode* sHead, int class, int subject) {
+    StuNode* classHead = copyStudentByClass(sHead, class);
+    if(classHead == NULL) {
+        printf("班级为空！\n");
+        pressAnyKeyToContinue();
+        return;
+    }
+    classHead = mergeSortStudentByCriteria(classHead, subject);
+    StuNode* curr = classHead;
+    printf("\t\t-----2023-2024学年下学期高三2024届第四次模拟考试成绩单-----\n\n");
+    printf("学号\t\t姓名\t班级\t语文\t数学\t英语\t理综\t物理\t化学\t生物\t总分\n");
+    while(curr) {
+        printf("%-16s%s\t%-8d%-8g%-8g%-8g%-8g%-8g%-8g%-8g%g\n",curr->student.id, curr->student.name, curr->student.class,
+            curr->student.score.chinese, curr->student.score.math, curr->student.score.english, curr->student.score.lizong,
+            curr->student.score.physics, curr->student.score.chemistry, curr->student.score.biology, curr->student.score.total);
+        curr = curr->next;
+    }
+    scrollConsoleToTop();
+    freeStudentList(classHead);
+}

@@ -145,16 +145,19 @@ void freeStudentList(StuNode* sHead) {
     }
 }
 
-StuNode* copyStudentList(StuNode* head) {
+StuNode* copyStudentByClass(const StuNode* sHead, int class) {
     StuNode dummy;
     StuNode* tail = &dummy;
-    while(head != NULL) {
-        StuNode* newStuNode = createStudentNode();
-        newStuNode->student = head->student;
-        newStuNode->prev = tail;
-        tail->next = newStuNode;
-        tail = tail->next;
-        head = head->next;
+    StuNode* cur = sHead->next;
+    while(cur != NULL) {
+        if(class == 0 || cur->student.class == class) {
+            StuNode* newStuNode = createStudentNode();
+            newStuNode->student = cur->student;
+            newStuNode->prev = tail;
+            tail->next = newStuNode;
+            tail = tail->next;
+        }
+        cur = cur->next;
     }
     return dummy.next;
 }
@@ -167,4 +170,30 @@ void showLoading() {
         Sleep(250);
     }
     printf("\r✅ 加载完成! \n");
+}
+
+// 将控制台窗口滚动到顶部(需以管理员权限运行)
+void scrollConsoleToTop() {
+    // 获取标准输出句柄
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+    // 1. 获取当前控制台信息
+    if (!GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+        printf("无法获取控制台信息，错误代码：%d\n", GetLastError());
+        return;
+    }
+
+    // 2. 计算新窗口位置（移动到缓冲区顶部）
+    SMALL_RECT newWindow = {
+        .Left = 0,
+        .Top = 0,  // 关键：将窗口顶部对齐缓冲区顶部
+        .Right = csbi.srWindow.Right,
+        .Bottom = csbi.srWindow.Bottom - csbi.srWindow.Top
+    };
+
+    // 3. 设置新的窗口显示区域
+    if (!SetConsoleWindowInfo(hConsole, TRUE, &newWindow)) {
+        printf("无法滚动到顶部，错误代码：%d\n", GetLastError());
+    }
 }

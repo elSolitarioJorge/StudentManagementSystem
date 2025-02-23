@@ -81,7 +81,9 @@ void appendStudentNodeAtTail(StuNode* sHead, StuNode* newStuNode);
 void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode);
 void freeAccountList(AccNode* aHead);
 void freeStudentList(StuNode* sHead);
-StuNode* copyStudentList(StuNode* head);
+StuNode* copyStudentByClass(const StuNode* sHead, int class);
+void showLoading();
+void scrollConsoleToTop();
 
 void mainMenu(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayMainMenu();
@@ -89,13 +91,13 @@ void userLogin(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void passwordAppeal(const AccNode* aHead, TNode* tHead);
 void inputHiddenPassword(char* inputPassword);
 AccNode* authentication(const AccNode* aHead, const char *inputUserName, const char *inputPassword);
-void showLoading();
+
 
 
 void studentMenu(AccNode* myAccount, StuNode* sHead);
 void displayStudentMenu();
-void queryResults(const StuNode* myself);
-void pagePrintingOneClassStudent(const StuNode* sHead, int pageSize, int class);
+void queryMyScore(const StuNode* myself);
+void pagePrintingOneClassStudentBySubject(const StuNode* sHead, int pageSize, int class);
 void changePassword(AccNode* acc);
 char* setPassword(char* password1, char* password2);
 void scoreAnalysis(StuNode* sHead, StuNode* myself);
@@ -112,6 +114,7 @@ StuNode* findStudent(StuNode* sHead);
 void pagePrintingStudent(const StuNode* sHead, int pageSize);
 float compareStudents(const StuNode* s2, const StuNode* s1, int criteria);
 void analyzeScoreDistribution(StuNode* sHead);
+void analyzeScoreRanking(const StuNode* sHead);
 StuNode* mergeStudentByCriteria(StuNode* head1, StuNode* head2, int criteria);
 StuNode* splitStudent(StuNode* start, int n);
 StuNode* mergeSortStudentByCriteria(StuNode* head, int criteria);
@@ -120,6 +123,7 @@ int getIntervalSize(int subject);
 void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char labels [][20], int* count);
 ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject);
 void drawBarChart(const ScoreDistribution* current);
+void printTranscript(const StuNode* sHead, int class, int subject);
 
 
 void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead);
