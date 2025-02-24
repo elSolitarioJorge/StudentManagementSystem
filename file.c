@@ -109,9 +109,9 @@ void importStudentToFile(const char* csvFileName, const char* binFileName) {
             &student.score.physics, &student.score.chemistry, &student.score.biology, &student.score.lizong, &student.score.total);
         fwrite(&student, sizeof(Student), 1, bin);
     }
+    printf("学生信息导入成功!\n");
     fclose(csv);
     fclose(bin);
-    printf("学生信息导入成功!\n");
 }
 
 void importAccountToFile(const char* csvFileName, const char* binFileName) {
@@ -131,7 +131,37 @@ void importAccountToFile(const char* csvFileName, const char* binFileName) {
         hashPassword(initPass, account.salt, account.passwordHash);
         fwrite(&account, sizeof(Account), 1, bin);
     }
+    printf("账户信息导入成功!\n");
     fclose(csv);
     fclose(bin);
-    printf("账户信息导入成功!\n");
+}
+
+void exportStudentToFile(const char* binFileName, const char* csvFileName) {
+    system("cls");
+    FILE* bin = fopen(binFileName, "rb");
+    FILE* csv = fopen(csvFileName, "wb, ccs=UTF-8");
+    if(!bin || !csv) {
+        perror("Error opening file");
+        pressAnyKeyToContinue();
+        return;
+    }
+    unsigned char bom[] = {0xEF, 0xBB, 0xBF}; // UTF-8 BOM
+    fwrite(bom, 1, sizeof(bom), csv); // 写入 BOM
+
+    fprintf(csv, "学号,姓名,班级,语文,数学,英语,物理,化学,生物,理综,总分\n");
+    Student student;
+    int count = 0;
+    while(fread(&student, sizeof(Student), 1, bin) == 1) {
+        fprintf(csv, "%s,%s,%d,%g,%g,%g,%g,%g,%g,%g,%g\n",
+            student.id, student.name, student.class, student.score.chinese, student.score.math,student.score.english,
+            student.score.physics, student.score.chemistry, student.score.biology, student.score.lizong, student.score.total);
+        count++;
+    }
+    if(ferror(bin)) {
+        printf("Error reading from file\n");
+    }
+    printf("成功导出 %d 条学生信息到 %s !\n", count, csvFileName);
+    fclose(bin);
+    fclose(csv);
+    pressAnyKeyToContinue();
 }

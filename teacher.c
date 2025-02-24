@@ -34,6 +34,9 @@ void teacherMenu(AccNode* myAccount, StuNode* sHead) {
             case '8':
                 changePassword(myAccount);
                 break;
+            case '9':
+                exportStudentToFile("students.bin", "new_students.csv");
+                break;
             default :
                 break;
         }
@@ -52,6 +55,7 @@ void displayTeacherMenu() {
     printf("║       📊 6. 成绩分布            ║\n");
     printf("║       📝 7. 各科排名            ║\n");
     printf("║       🔐 8. 修改密码            ║\n");
+    printf("║       💾 9. 导出学生信息        ║\n");
     printf("║       ↩️ 0. 返回                ║\n");
     printf("╚═════════════════════════════════╝\n");
 }

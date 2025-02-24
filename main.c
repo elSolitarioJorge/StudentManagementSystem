@@ -4,17 +4,28 @@ int main() {
     AccNode* aHead = createAccountNode();
     StuNode* sHead = createStudentNode();
     TNode* tHead = createTodoNode();
+    readData(aHead, sHead, tHead);
+
+    showLoading();
+    system("cls");
+
+    mainMenu(aHead, sHead, tHead);
+
+    freeList(aHead, sHead, tHead);
+    return 0;
+}
+
+void readData(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     readAccountFromFile(aHead);
     readStudentFromFile(sHead);
     readTodoFromFile(tHead);
     system("cls");
-    showLoading();
-    pressAnyKeyToContinue();
-    system("cls");
-    mainMenu(aHead, sHead, tHead);
+}
+
+void freeList(AccNode* aHead, StuNode* sHead, TNode* tHead) {
     freeAccountList(aHead);
     freeStudentList(sHead);
-    return 0;
+    freeTodoList(tHead);
 }
 
 void pressAnyKeyToContinue() {
@@ -145,6 +156,15 @@ void freeStudentList(StuNode* sHead) {
     }
 }
 
+void freeTodoList(TNode* tHead) {
+    TNode* cur = tHead;
+    while(cur != NULL) {
+        TNode* del = cur;
+        cur = cur->next;
+        free(del);
+    }
+}
+
 StuNode* copyStudentByClass(const StuNode* sHead, int class) {
     StuNode dummy;
     StuNode* tail = &dummy;
@@ -170,6 +190,7 @@ void showLoading() {
         Sleep(250);
     }
     printf("\r✅ 加载完成! \n");
+    pressAnyKeyToContinue();
 }
 
 // 将控制台窗口滚动到顶部(需以管理员权限运行)

@@ -68,6 +68,8 @@ typedef struct {
     int absentCount;      // 缺考人数
 }ScoreDistribution;
 
+void readData(AccNode* aHead, StuNode* sHead, TNode* tHead);
+void freeList(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void pressAnyKeyToContinue();
 void clearInputBuffer();
 int getValidInput(int min, int max);
@@ -81,6 +83,7 @@ void appendStudentNodeAtTail(StuNode* sHead, StuNode* newStuNode);
 void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode);
 void freeAccountList(AccNode* aHead);
 void freeStudentList(StuNode* sHead);
+void freeTodoList(TNode* tHead);
 StuNode* copyStudentByClass(const StuNode* sHead, int class);
 void showLoading();
 void scrollConsoleToTop();
@@ -147,7 +150,7 @@ void readStudentFromFile(StuNode* sHead);
 void readTodoFromFile(TNode* tHead);
 void importStudentToFile(const char* csvFileName, const char* binFileName);
 void importAccountToFile(const char* csvFileName, const char* binFileName);
-
+void exportStudentToFile(const char* binFileName, const char* csvFileName);
 
 
 
