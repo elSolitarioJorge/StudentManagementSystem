@@ -1,5 +1,5 @@
 #include "student_management_system.h"
-
+// 将账户信息写入文件
 void writeAccountToFile(const AccNode* aHead) {
     FILE* fp = fopen("accounts.bin", "wb");
     if (fp == NULL) {
@@ -14,7 +14,7 @@ void writeAccountToFile(const AccNode* aHead) {
     printf("账户信息写入成功！\n");
     fclose(fp);
 }
-
+// 将学生信息写入文件
 void writeStudentToFile(const StuNode* sHead) {
     FILE* fp = fopen("students.bin", "wb");
     if (fp == NULL) {
@@ -29,7 +29,7 @@ void writeStudentToFile(const StuNode* sHead) {
     printf("学生信息写入成功！\n");
     fclose(fp);
 }
-
+// 将代办信息写入文件
 void writeTodoToFile(const TNode* tHead) {
     FILE* fp = fopen("todo.bin", "wb");
     if (fp == NULL) {
@@ -44,7 +44,7 @@ void writeTodoToFile(const TNode* tHead) {
     printf("代办信息写入成功！\n");
     fclose(fp);
 }
-
+// 从文件中读取账户信息
 void readAccountFromFile(AccNode* aHead) {
     FILE* fp = fopen("accounts.bin", "rb");
     if(fp == NULL) {
@@ -60,7 +60,7 @@ void readAccountFromFile(AccNode* aHead) {
     printf("账户信息读取成功！\n");
     fclose(fp);
 }
-
+// 从文件中读取学生信息
 void readStudentFromFile(StuNode* sHead) {
     FILE* fp = fopen("students.bin", "rb");
     if(fp == NULL) {
@@ -76,7 +76,7 @@ void readStudentFromFile(StuNode* sHead) {
     printf("学生信息读取成功\n");
     fclose(fp);
 }
-
+// 从文件中读取代办信息
 void readTodoFromFile(TNode* tHead) {
     FILE* fp = fopen("todo.bin", "rb");
     if(fp == NULL) {
@@ -92,7 +92,7 @@ void readTodoFromFile(TNode* tHead) {
     printf("代办信息读取成功\n");
     fclose(fp);
 }
-
+// 将学生信息从csv文件导入到二进制文件
 void importStudentToFile(const char* csvFileName, const char* binFileName) {
     FILE* csv = fopen(csvFileName, "r");
     FILE* bin = fopen(binFileName, "wb");
@@ -113,7 +113,7 @@ void importStudentToFile(const char* csvFileName, const char* binFileName) {
     fclose(csv);
     fclose(bin);
 }
-
+// 将账户信息从csv文件导入到二进制文件
 void importAccountToFile(const char* csvFileName, const char* binFileName) {
     FILE* csv = fopen(csvFileName, "r");
     FILE* bin = fopen(binFileName, "wb");
@@ -135,7 +135,7 @@ void importAccountToFile(const char* csvFileName, const char* binFileName) {
     fclose(csv);
     fclose(bin);
 }
-
+// 将学生信息导出到csv文件
 void exportStudentToFile(const char* binFileName, const char* csvFileName) {
     system("cls");
     FILE* bin = fopen(binFileName, "rb");

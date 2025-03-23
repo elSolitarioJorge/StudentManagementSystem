@@ -106,6 +106,7 @@ char* setPassword(char* password1, char* password2);
 void scoreAnalysis(StuNode* sHead, StuNode* myself);
 float getScoreBySubject(StuNode* node, int subject);
 const char* getSubjectName(int subject);
+int idExist(const StuNode* sHead, char* id);
 
 void teacherMenu(AccNode* myAccount, StuNode* sHead);
 void displayTeacherMenu();
@@ -141,6 +142,7 @@ void finishTodo(const AccNode* aHead, TNode* tHead, int* count);
 char selectIdentify();
 void hashPassword(const char* password, const unsigned char* salt, unsigned char* outputHash);
 void initAccount(AccNode* acc);
+int usernameExist(AccNode* aHead, char* userName);
 
 void writeAccountToFile(const AccNode* aHead);
 void writeStudentToFile(const StuNode* sHead);

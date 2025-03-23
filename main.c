@@ -14,29 +14,29 @@ int main() {
     freeList(aHead, sHead, tHead);
     return 0;
 }
-
+// 从文件读取数据
 void readData(AccNode* aHead, StuNode* sHead, TNode* tHead) {
-    readAccountFromFile(aHead);
-    readStudentFromFile(sHead);
-    readTodoFromFile(tHead);
-    system("cls");
+    readAccountFromFile(aHead);    // 从文件读取账户信息
+    readStudentFromFile(sHead);    // 从文件读取学生信息
+    readTodoFromFile(tHead);       // 从文件读取代办
+    system("cls");        // 清屏
 }
-
+// 释放链表
 void freeList(AccNode* aHead, StuNode* sHead, TNode* tHead) {
-    freeAccountList(aHead);
-    freeStudentList(sHead);
-    freeTodoList(tHead);
+    freeAccountList(aHead);    // 释放账户链表
+    freeStudentList(sHead);    // 释放学生链表
+    freeTodoList(tHead);       // 释放代办链表
 }
-
+// 请按任意键继续
 void pressAnyKeyToContinue() {
     printf("请按任意键继续...\n");
-    _getch();
+    _getch();      // 读取用户按键操作
 }
-
+// 清空缓冲区
 void clearInputBuffer() {
     while(getchar() != '\n');
 }
-
+// 获取一个有效整数输入，min~max之间的整数
 int getValidInput(int min, int max) {
     int input;
     char monitoring; //用于监视输入  monitor  v.监测;监视;监控
@@ -49,22 +49,22 @@ int getValidInput(int min, int max) {
     }
     return input;
 }
-
+// 获取一个有效字符串输入
 void getStringInput(const char* prompt, char* input, int size) {
-    if(size == 0) return;
-    printf("%s", prompt);
+    if(size == 0) return;      // 如果size为0，直接返回
+    printf("%s", prompt);    // 输出提示信息
     if(fgets(input, size, stdin) == NULL) {
-        input[0] = '\0';
+        input[0] = '\0';   // 如果没有任何输入，将第一个字符设为'\0'，防止清空缓冲区时卡住
         return;
-    }
-    char* end = strchr(input, '\n');
+    }  // 读取用户输入
+    char* end = strchr(input, '\n');  // 查找并返回'\n'的位置
     if(end) {
-        *end = '\0';
+        *end = '\0';  // 将'\n'替换为'\0'
     } else {
-        clearInputBuffer();
+        clearInputBuffer();   // 如果输入超出限制，需清空缓冲区，防止影响后续程序运行
     }
 }
-
+// 获取一个浮点数输入
 float getFloatInput(const char* prompt) {
     float input;
     while(1) {
@@ -74,11 +74,11 @@ float getFloatInput(const char* prompt) {
             return input;
         } else {
             clearInputBuffer();
-            fprintf(stderr, "输入错误，请重新输入！\n");
+            fprintf(stderr, "输入错误，请重新输入!\n");
         }
     }
 }
-
+// 创建账户节点（链表）
 AccNode* createAccountNode() {
     AccNode* newAccNode = (AccNode*)malloc(sizeof(AccNode));
     if(newAccNode == NULL) {
@@ -88,7 +88,7 @@ AccNode* createAccountNode() {
     newAccNode->next = NULL;
     return newAccNode;
 }
-
+// 创建学生节点（双向链表）
 StuNode* createStudentNode() {
     StuNode* newStuNode = (StuNode*)malloc(sizeof(StuNode));
     if(newStuNode == NULL) {
@@ -99,7 +99,7 @@ StuNode* createStudentNode() {
     newStuNode->next = NULL;
     return newStuNode;
 }
-
+// 创建代办节点（链表）
 TNode* createTodoNode() {
     TNode* newTNode = (TNode*)malloc(sizeof(TNode));
     if(newTNode == NULL) {
@@ -109,7 +109,7 @@ TNode* createTodoNode() {
     newTNode->next = NULL;
     return newTNode;
 }
-
+// 将账户节点添加到账户链表尾部
 void appendAccountNodeAtTail(AccNode* aHead, AccNode* newAccNode) {
     AccNode* tail = aHead;
     while(tail->next != NULL) {
@@ -118,7 +118,7 @@ void appendAccountNodeAtTail(AccNode* aHead, AccNode* newAccNode) {
     newAccNode->next = NULL;
     tail->next = newAccNode;
 }
-
+// 将学生节点添加到学生链表尾部
 void appendStudentNodeAtTail(StuNode* sHead, StuNode* newStuNode) {
     StuNode* tail = sHead;
     while(tail->next != NULL) {
@@ -128,7 +128,7 @@ void appendStudentNodeAtTail(StuNode* sHead, StuNode* newStuNode) {
     newStuNode->prev = tail;
     tail->next = newStuNode;
 }
-
+// 将代办节点添加到代办链表尾部
 void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode) {
     TNode* tail = tHead;
     while(tail->next != NULL) {
@@ -137,7 +137,7 @@ void appendTodoNodeAtTail(TNode* tHead, TNode* newTNode) {
     newTNode->next = NULL;
     tail->next = newTNode;
 }
-
+// 释放账户链表
 void freeAccountList(AccNode* aHead) {
     AccNode* cur = aHead;
     while(cur != NULL) {
@@ -146,7 +146,7 @@ void freeAccountList(AccNode* aHead) {
         free(del);
     }
 }
-
+// 释放学生链表
 void freeStudentList(StuNode* sHead) {
     StuNode* cur = sHead;
     while(cur != NULL) {
@@ -155,7 +155,7 @@ void freeStudentList(StuNode* sHead) {
         free(del);
     }
 }
-
+// 释放代办链表
 void freeTodoList(TNode* tHead) {
     TNode* cur = tHead;
     while(cur != NULL) {
@@ -164,7 +164,7 @@ void freeTodoList(TNode* tHead) {
         free(del);
     }
 }
-
+// 根据班级复制学生链表
 StuNode* copyStudentByClass(const StuNode* sHead, int class) {
     StuNode dummy;
     StuNode* tail = &dummy;
@@ -181,7 +181,7 @@ StuNode* copyStudentByClass(const StuNode* sHead, int class) {
     }
     return dummy.next;
 }
-
+// 展示加载页面
 void showLoading() {
     const char* frames[] = {"🌑 ","🌒 ","🌓 ","🌔 ","🌕 ","🌖 ","🌗 ","🌘 "};
     for(int i = 0; i < 8; i++) {
@@ -192,7 +192,6 @@ void showLoading() {
     printf("\r✅ 加载完成! \n");
     pressAnyKeyToContinue();
 }
-
 // 将控制台窗口滚动到顶部(需以管理员权限运行)
 void scrollConsoleToTop() {
     // 获取标准输出句柄

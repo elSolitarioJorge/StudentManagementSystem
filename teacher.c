@@ -1,40 +1,40 @@
 #include "student_management_system.h"
-
+// 教师界面
 void teacherMenu(AccNode* myAccount, StuNode* sHead) {
     int choice = 0;
     while(1) {
-        system("cls");
-        displayTeacherMenu();
-        choice = _getch();
+        system("cls");    // 清屏
+        displayTeacherMenu();     // 显示教师菜单界面
+        choice = _getch();        // 获取用户输入
         switch(choice) {
-            case '0':
+            case '0':            // 返回上一级
                 return;
-            case '1':
+            case '1':            // 增加学生
                 addStudent(sHead);
                 break;
-            case '2':
+            case '2':            // 删除学生
                 deleteStudent(sHead);
                 break;
-            case '3':
+            case '3':            // 修改学生
                 changeStudent(sHead);
                 break;
-            case '4':
+            case '4':            // 查找学生
                 findStudent(sHead);
                 pressAnyKeyToContinue();
                 break;
-            case '5':
+            case '5':            // 分页打印所有学生信息
                 pagePrintingStudent(sHead, 30);
                 break;
-            case '6':
+            case '6':            // 成绩分布
                 analyzeScoreDistribution(sHead);
                 break;
-            case'7':
+            case'7':             // 成绩分析
                 analyzeScoreRanking(sHead);
                 break;
-            case '8':
+            case '8':            // 修改密码
                 changePassword(myAccount);
                 break;
-            case '9':
+            case '9':            // 导出学生信息
                 exportStudentToFile("students.bin", "new_students.csv");
                 break;
             default :
@@ -42,7 +42,7 @@ void teacherMenu(AccNode* myAccount, StuNode* sHead) {
         }
     }
 }
-
+// 显示教师菜单界面
 void displayTeacherMenu() {
     printf("╔═════════════════════════════════╗\n");
     printf("║      👨🏫 教师控制台 👩🏫       ║\n");
@@ -59,7 +59,7 @@ void displayTeacherMenu() {
     printf("║       ↩️ 0. 返回                ║\n");
     printf("╚═════════════════════════════════╝\n");
 }
-
+// 输入成绩
 void enterScore(StuNode* student) {
     student->student.score.chinese = getFloatInput("语文成绩：");
     student->student.score.math = getFloatInput("数学成绩：");
@@ -72,12 +72,17 @@ void enterScore(StuNode* student) {
     student->student.score.total = student->student.score.chinese + student->student.score.math
                                       + student->student.score.english + student->student.score.lizong;
 }
-
+// 增加学生
 void addStudent(StuNode* sHead) {
     system("cls");
     StuNode* newStudent = createStudentNode();
     printf("---添加学生信息---\n");
     getStringInput("学号：", newStudent->student.id, sizeof(newStudent->student.id));
+    if(idExist(sHead, newStudent->student.id)) {
+        printf("学号已存在，请重新操作\n");
+        pressAnyKeyToContinue();
+        return;
+    }
     getStringInput("姓名：", newStudent->student.name, sizeof(newStudent->student.name));
     printf("班级：");
     newStudent->student.class = getValidInput(1, 25);
@@ -92,7 +97,7 @@ void addStudent(StuNode* sHead) {
     printf("学生信息添加成功！\n");
     pressAnyKeyToContinue();
 }
-
+// 删除学生
 void deleteStudent(StuNode* sHead) {
     StuNode* stu = findStudent(sHead);
     if(stu != NULL) {
@@ -114,7 +119,7 @@ void deleteStudent(StuNode* sHead) {
     }
     pressAnyKeyToContinue();
 }
-
+// 修改学生
 void changeStudent(StuNode* sHead) {
     StuNode* stu = findStudent(sHead);
     if(stu != NULL) {
@@ -136,7 +141,7 @@ void changeStudent(StuNode* sHead) {
     }
     pressAnyKeyToContinue();
 }
-
+// 查找学生（根据学号或姓名）
 StuNode* findStudent(StuNode* sHead) {
     system("cls");
     StuNode* cur = sHead->next;
@@ -156,7 +161,7 @@ StuNode* findStudent(StuNode* sHead) {
     printf("没有找到该学生信息！！！\n");
     return cur;
 }
-
+// 分页打印学生信息
 void pagePrintingStudent(const StuNode* sHead, int pageSize) {
     StuNode* cur = sHead->next;
     int size = 0;
@@ -204,120 +209,147 @@ void pagePrintingStudent(const StuNode* sHead, int pageSize) {
         }
     }
 }
-
+// 比较学生该科目成绩
 float compareStudents(const StuNode* s1, const StuNode* s2, int criteria) {
     switch(criteria) {
-        case 0:
+        case 0:  // 按总分比较
             return s1->student.score.total - s2->student.score.total;
-        case 1:
+        case 1:  // 按语文成绩比较
             return s1->student.score.chinese - s2->student.score.chinese;
-        case 2:
+        case 2:  // 按数学成绩比较
             return s1->student.score.math - s2->student.score.math;
-        case 3:
+        case 3:  // 按英语成绩比较
             return s1->student.score.english - s2->student.score.english;
-        case 4:
+        case 4:  // 按理综成绩比较
             return s1->student.score.lizong - s2->student.score.lizong;
-        case 5:
+        case 5:  // 按物理成绩比较
             return s1->student.score.physics - s2->student.score.physics;
-        case 6:
+        case 6:  // 按化学成绩比较
             return s1->student.score.chemistry - s2->student.score.chemistry;
-        case 7:
+        case 7:  // 按生物成绩比较
             return s1->student.score.biology - s2->student.score.biology;
-        default:
+        default: // 无效标准返回0
             return 0;
     }
 }
-
+// 合并两个已按指定标准降序排列的双向链表，合并后仍保持降序
 StuNode* mergeStudentByCriteria(StuNode* head1, StuNode* head2, int criteria) {
+    // 创建哑节点简化边界处理
     StuNode dummy;
     dummy.prev = NULL;
     dummy.next = NULL;
     StuNode* tail = &dummy;
+
+    // 遍历两个链表，选择较大节点依次连接
     while(head1 && head2) {
+        // 比较节点并选择较大的接入合并链表
         if(compareStudents(head1, head2, criteria) > 0) {
             tail->next = head1;
-            head1->prev = tail;
+            head1->prev = tail;  // 维护前驱指针
             head1 = head1->next;
         } else {
             tail->next = head2;
-            head2->prev = tail;
+            head2->prev = tail;   // 维护前驱指针
             head2 = head2->next;
         }
         tail = tail->next;
     }
+
+    // 连接剩余节点
     StuNode* remaining = head1 ? head1 : head2;
     if(remaining) {
         tail->next = remaining;
-        remaining->prev = tail;
+        remaining->prev = tail;  // 维护剩余节点的前驱指针
     }
+
+    // 确保头节点的prev为NULL
     if(dummy.next) {
         dummy.next->prev = NULL;
     }
     return dummy.next;
 }
-
+// 将链表从start节点分割为两部分，前n个节点为第一部分
 StuNode* splitStudent(StuNode* start, int n) {
     if(start == NULL || start->next == NULL) {
         return NULL;
     }
+
+    // 移动到第n个节点
     for(int i = 1; i < n && start->next; i++) {
         start = start->next;
     }
+
+    // 切断链表并获取第二部分头节点
     StuNode* next = start->next;
     if(next) {
-        next->prev = NULL;
+        next->prev = NULL;  // 断开前后联系
     }
-    start->next = NULL;
+    start->next = NULL;     // 切断第一部分末尾
+
     return next;
 }
-
-StuNode*  mergeSortStudentByCriteria(StuNode* head, int criteria) {
+// 使用迭代归并排序算法对双向链表进行降序排序
+StuNode* mergeSortStudentByCriteria(StuNode* head, int criteria) {
     if(head == NULL || head->next == NULL) {
         return head;
     }
+
+    // 计算链表总长度
     int listSize = 0;
     StuNode* curr = head;
     while(curr) {
         listSize++;
         curr = curr->next;
     }
+
+    // 分块大小倍增进行迭代归并
     for(int blockSize = 1; blockSize < listSize; blockSize *= 2) {
+        // 创建临时哑节点用于连接排序后的块
         StuNode* dummyHead = (StuNode*)malloc(sizeof(StuNode));
         dummyHead->prev = NULL;
         dummyHead->next = head;
         StuNode* tail = dummyHead;
+
+        // 每次处理两个相邻块进行合并
         while(head) {
-            StuNode* left = head;
-            StuNode* right = splitStudent(left, blockSize);
-            head = splitStudent(right, blockSize);
+            StuNode* left = head;                   // 第一个块
+            StuNode* right = splitStudent(left, blockSize); // 分割出第二个块
+            head = splitStudent(right, blockSize);  // 准备下一组块
+
+            // 合并两个块并连接到哑节点后
             StuNode* merged = mergeStudentByCriteria(left, right, criteria);
             tail->next = merged;
             merged->prev = tail;
+
+            // 移动tail到合并链表的末尾
             while(tail->next) {
                 tail = tail->next;
             }
         }
+
+        // 更新head指针并释放临时哑节点
         head = dummyHead->next;
         free(dummyHead);
     }
+
     return head;
 }
-
+// 科目满分对照
 int getFullScoreBySubject(int subject) {
-    if(subject == 0) return 750;
-    if(subject == 4) return 300;
-    if(subject == 5) return 110;
-    if(subject == 6) return 100;
-    if(subject == 7) return 90;
-    return 150;
+    if(subject == 0) return 750;   // 总分满分
+    if(subject == 4) return 300;   // 理综满分
+    if(subject == 5) return 110;   // 物理满分
+    if(subject == 6) return 100;   // 化学满分
+    if(subject == 7) return 90;    // 生物满分
+    return 150;                    // 语、数、英满分
 }
-
+// 根据科目设置区间大小
 int getIntervalSize(int subject) {
     if(subject == 0) return 50;//总分
     if(subject == 4) return 20;//理综
     return 10;
 }
-
+// 生成分数区间标签
 void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char labels [][20], int* count) {
     *count = 0;
     int start = ((int)minVal / intervalSize) * intervalSize;
@@ -327,21 +359,22 @@ void generateIntervalLabels(float minVal, float maxVal, int intervalSize, char l
         (*count)++;
     }
 }
-
+// 计算成绩分布数据
 ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) {
     ScoreDistribution current;
     current.class = class;
     current.subject = subject;
-    current.minScore = 1000;
-    current.maxScore = -1;
-    current.maxCount = 0;
-    current.totalCount = 0;
-    current.absentCount = 0;
+    current.minScore = 1000;  // 初始化最小分
+    current.maxScore = -1;     // 初始化最大分
+    current.maxCount = 0;      // 最大区间人数
+    current.totalCount = 0;    // 总参考人数
+    current.absentCount = 0;   // 缺考人数
     current.intervalSize = getIntervalSize(subject);
     StuNode* cur = sHead->next;
+    // 第一遍遍历：统计基础数据
     while(cur) {
-        if(class == 0 || cur->student.class == class) {
-            if(cur->student.score.total == 0) {
+        if(class == 0 || cur->student.class == class) {  // 班级筛选
+            if(cur->student.score.total == 0) {          // 缺考判断
                 current.absentCount++;
             } else {
                 float score = getScoreBySubject(cur, subject);
@@ -352,14 +385,17 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) 
         }
         cur = cur->next;
     }
+    // 处理全缺考特殊情况
     if(current.totalCount == current.absentCount) {
         current.minScore = 0;
         current.maxScore = 0;
     }
+    // 计算有效区间范围
     int intervalStart = ((int)current.minScore / current.intervalSize) * current.intervalSize;
     int intervalEnd = ((int)current.maxScore / current.intervalSize + 1) * current.intervalSize;
     intervalEnd = intervalEnd < getFullScoreBySubject(subject) ? intervalEnd : getFullScoreBySubject(subject);
     current.intervalCount = (intervalEnd - intervalStart) / current.intervalSize;
+    // 第二遍遍历：统计区间人数
     memset(current.intervals, 0, sizeof(current.intervals));
     cur = sHead->next;
     while(cur) {
@@ -374,7 +410,7 @@ ScoreDistribution calculateDistribution(StuNode* sHead, int class, int subject) 
     }
     return current;
 }
-
+// 绘制柱状图
 void drawBarChart(const ScoreDistribution* current) {
     char labels[20][20];
     int labelCount = 0;
@@ -390,7 +426,7 @@ void drawBarChart(const ScoreDistribution* current) {
         printf(" %d人\n", current->intervals[i]);
     }
 }
-
+// 成绩分析
 void analyzeScoreDistribution(StuNode* sHead) {
     int currentClass = 0, currentSubject = 0;
     while(1) {
@@ -454,7 +490,7 @@ void analyzeScoreDistribution(StuNode* sHead) {
         }
     }
 }
-
+// 成绩排名分析
 void analyzeScoreRanking(const StuNode* sHead) {
     int currentClass = 0, currentSubject = 0;
     while(1) {
@@ -462,7 +498,7 @@ void analyzeScoreRanking(const StuNode* sHead) {
         printf("科目：%s  |  ", getSubjectName(currentSubject));
         if(currentClass) printf("%d班\n\n", currentClass);
         else printf("年级\n\n");
-        printf("←→:切换科目 | %s\n\n", currentClass ?  "↑↓:调整班级 | G:年级视图" : "C:班级视图");
+        printf("←→:切换科目 | %s | %s\n\n", currentClass ?  "↑↓:调整班级 | G:年级视图" : "C:班级视图", "Q:退出");
         printTranscript(sHead, currentClass, currentSubject);
         int input = _getch();
         switch(input) {
@@ -491,7 +527,7 @@ void analyzeScoreRanking(const StuNode* sHead) {
         }
     }
 }
-
+// 打印排序成绩单
 void printTranscript(const StuNode* sHead, int class, int subject) {
     StuNode* classHead = copyStudentByClass(sHead, class);
     if(classHead == NULL) {
@@ -511,4 +547,15 @@ void printTranscript(const StuNode* sHead, int class, int subject) {
     }
     scrollConsoleToTop();
     freeStudentList(classHead);
+}
+
+int idExist(const StuNode* sHead, char* id) {
+    StuNode* cur = sHead;
+    while(cur) {
+        if(strcmp(cur->student.id, id) == 0) {
+            return 1;
+        }
+        cur = cur->next;
+    }
+    return 0;
 }
