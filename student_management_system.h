@@ -133,7 +133,7 @@ void printTranscript(const StuNode* sHead, int class, int subject);
 void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayAdminMenu(int count);
 void addAccount(AccNode* aHead);
-void deleteAccount(AccNode* aHead);
+void deleteAccount(AccNode* aHead, AccNode* myAccount);
 void changeAccount(AccNode* aHead);
 AccNode* findPrevAccount(AccNode* aHead);
 void pagePrintingAccount(const AccNode* aHead, int pageSize);

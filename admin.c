@@ -20,7 +20,7 @@ void adminMenu(AccNode* myAccount, AccNode* aHead, StuNode* sHead, TNode* tHead)
                 addAccount(aHead);
                 break;
             case '2':           // 删除账户
-                deleteAccount(aHead);
+                deleteAccount(aHead, myAccount);
                 break;
             case '3':           // 修改账户
                 changeAccount(aHead);
@@ -93,11 +93,16 @@ void addAccount(AccNode* aHead) {
     pressAnyKeyToContinue();
 }
 // 删除账户
-void deleteAccount(AccNode* aHead) {
+void deleteAccount(AccNode* aHead, AccNode* myAccount) {
     //查找账户
     AccNode* prevAcc = findPrevAccount(aHead);
     // 找到该账户，执行删除操作
     if(prevAcc != NULL) {
+        if(prevAcc->next == myAccount) {
+            printf("管理员先生，你正在试图删除你自己，这种做法是不被允许的!!!\n");
+            pressAnyKeyToContinue();
+            return;
+        }
         char choice;
         printf("是否确认删除此账户(Y/N):");
         scanf(" %c", &choice);
