@@ -25,3 +25,17 @@
 678	750	7662559068705374	StudentManagementSystem.exe	70d67bc7453bbb28
 19	666	7662572573948615	CMakeFiles/StudentManagementSystem.dir/admin.c.obj	812c93bcdd899125
 666	739	7662572580427633	StudentManagementSystem.exe	70d67bc7453bbb28
+77	3002	7665914216709318	CMakeFiles/StudentManagementSystem.dir/login.c.obj	7df19ba775bec109
+89	3003	7665914216828636	CMakeFiles/StudentManagementSystem.dir/admin.c.obj	812c93bcdd899125
+79	3004	7665914216740252	CMakeFiles/StudentManagementSystem.dir/student.c.obj	f4d16683cb52e36b
+86	3005	7665914216814166	CMakeFiles/StudentManagementSystem.dir/file.c.obj	5c17597529adf9f3
+62	3005	7665914216569013	CMakeFiles/StudentManagementSystem.dir/main.c.obj	996d5814cccbfb82
+84	3006	7665914216782155	CMakeFiles/StudentManagementSystem.dir/teacher.c.obj	b24fd484ab582265
+3006	3280	7665914246003797	StudentManagementSystem.exe	70d67bc7453bbb28
+48	1076	7665922997948104	CMakeFiles/StudentManagementSystem.dir/file.c.obj	5c17597529adf9f3
+40	1077	7665922997885852	CMakeFiles/StudentManagementSystem.dir/login.c.obj	7df19ba775bec109
+31	1077	7665922997791207	CMakeFiles/StudentManagementSystem.dir/main.c.obj	996d5814cccbfb82
+50	1078	7665922997981588	CMakeFiles/StudentManagementSystem.dir/admin.c.obj	812c93bcdd899125
+43	1079	7665922997905993	CMakeFiles/StudentManagementSystem.dir/student.c.obj	f4d16683cb52e36b
+45	1083	7665922997927047	CMakeFiles/StudentManagementSystem.dir/teacher.c.obj	b24fd484ab582265
+1083	1373	7665923008299433	StudentManagementSystem.exe	70d67bc7453bbb28

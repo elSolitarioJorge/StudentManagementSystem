@@ -217,3 +217,35 @@ void scrollConsoleToTop() {
         printf("无法滚动到顶部，错误代码：%d\n", GetLastError());
     }
 }
+// 检查用户名是否合法
+int isLegalityUserName(char* s) {
+    int len = strlen(s);
+    if(len < 4 || len > 10) {
+        printf("用户名应在4-10位之间，请重新操作！\n");
+        return 0;
+    }
+    for(int i = 0; s[i]; i++) {
+        char c = s[i];
+        if(c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z') {
+            printf("用户名只能包含数字、大小写字母，请重新操作！\n");
+            return 0;
+        }
+    }
+    return 1;
+}
+// 检查学号是否合法
+int isLegalityId(char* s) {
+    int len = strlen(s);
+    if(len != 10) {
+        printf("学号是10位！！！笨蛋！！！\n");
+        return 0;
+    }
+    for(int i = 0; s[i]; i++) {
+        char c = s[i];
+        if(c < '0' || c > '9') {
+            printf("学号是10位阿拉伯数字，请重新操作！\n");
+            return 0;
+        }
+    }
+    return 1;
+}

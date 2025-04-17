@@ -87,6 +87,8 @@ void freeTodoList(TNode* tHead);
 StuNode* copyStudentByClass(const StuNode* sHead, int class);
 void showLoading();
 void scrollConsoleToTop();
+int isLegalityUserName(char* s);
+int isLegalityId(char* s);
 
 void mainMenu(AccNode* aHead, StuNode* sHead, TNode* tHead);
 void displayMainMenu();

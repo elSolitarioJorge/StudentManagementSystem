@@ -70,12 +70,15 @@ void addAccount(AccNode* aHead) {
     printf("请选择账户身份（S：学生  T：教师  A：管理员）：");
     // 选择账户身份
     newAccount->account.role = selectIdentify();
-    // 输错5次，直接返回
     if(newAccount->account.role == -1) {
         return;
     }
     // 输入用户名
     getStringInput("请输入用户名(账号）：", newAccount->account.userName, sizeof(newAccount->account.userName));
+    if(isLegalityUserName(newAccount->account.userName) == 0) {
+        pressAnyKeyToContinue();
+        return;
+    }
     if(usernameExist(aHead, newAccount->account.userName)) {
         printf("用户名已存在，请重新操作\n");
         pressAnyKeyToContinue();
@@ -125,6 +128,15 @@ void changeAccount(AccNode* aHead) {
     AccNode* cur = findPrevAccount(aHead)->next;
     if(cur) {
         getStringInput("设置用户名：", cur->account.userName, sizeof(cur->account.userName));
+        if(isLegalityUserName(cur->account.userName) == 0) {
+            pressAnyKeyToContinue();
+            return;
+        }
+        if(usernameExist(aHead, cur->account.userName)) {
+            printf("用户名已存在，请重新操作\n");
+            pressAnyKeyToContinue();
+            return;
+        }
         getStringInput("设置姓名：  ", cur->account.name, sizeof(cur->account.name));
         printf("设置身份（S/T/A）：");
         cur->account.role = selectIdentify();
@@ -317,7 +329,7 @@ void initAccount(AccNode* acc) {
     const char* initPass = acc->account.role == 'S' ? acc->account.userName + strlen(acc->account.userName) - 6 : "111111";
     hashPassword(initPass, acc->account.salt, acc->account.passwordHash);
 }
-// 判断学号是否存在
+// 判断用户名是否存在
 int usernameExist(AccNode* aHead, char* userName) {
     AccNode* cur = aHead->next;
     while(cur) {

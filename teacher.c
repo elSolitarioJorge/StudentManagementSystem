@@ -78,6 +78,10 @@ void addStudent(StuNode* sHead) {
     StuNode* newStudent = createStudentNode();
     printf("---添加学生信息---\n");
     getStringInput("学号：", newStudent->student.id, sizeof(newStudent->student.id));
+    if(isLegalityId(newStudent->student.id) == 0) {
+        pressAnyKeyToContinue();
+        return;
+    }
     if(idExist(sHead, newStudent->student.id)) {
         printf("学号已存在，请重新操作\n");
         pressAnyKeyToContinue();
@@ -126,6 +130,15 @@ void changeStudent(StuNode* sHead) {
         Student student = stu->student;
         printf("---修改学生信息---\n");
         getStringInput("学号：", stu->student.id, sizeof(stu->student.id));
+        if(isLegalityId(stu->student.id) == 0) {
+            pressAnyKeyToContinue();
+            return;
+        }
+        if(idExist(sHead, stu->student.id)) {
+            printf("学号已存在，请重新操作\n");
+            pressAnyKeyToContinue();
+            return;
+        }
         getStringInput("姓名：", stu->student.name, sizeof(stu->student.name));
         printf("班级：");
         stu->student.class = getValidInput(1, 25);
@@ -548,7 +561,7 @@ void printTranscript(const StuNode* sHead, int class, int subject) {
     scrollConsoleToTop();
     freeStudentList(classHead);
 }
-
+// 检查学号是否存在
 int idExist(const StuNode* sHead, char* id) {
     StuNode* cur = sHead;
     while(cur) {
